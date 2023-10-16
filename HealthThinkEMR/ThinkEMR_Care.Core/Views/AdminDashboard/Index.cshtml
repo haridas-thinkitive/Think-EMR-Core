@@ -1,0 +1,46 @@
+﻿@model IEnumerable<ThinkEMR_Care.Core.Models.AdminDashboard>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-8 offset-2">
+@*            <a class="btn btn-sm btn-success m-1" asp-controller="Asset" asp-action="Create">Create</a>
+*@            <table class="table table-bordered">
+                <thead>
+                    <tr class="text-center">
+                        <th>GroupId</th>
+                        <th>Provider Group Name</th>
+                        <th>Speciality</th>
+                        <th>Providers Count</th>
+                        <th>Patients Count</th>
+                        <th>Appointment Count</th>
+                        <th>Encounter Count</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="assetsTableBody">
+                    @foreach (var data in Model)
+                    {
+                        <tr class="text-center" data-asset-id="@data.GroupId" data-asset-name="@data.ProviderGroupName" data-asset-city="@data.Speciality" data-asset-country="@data.ProvidersCount" data-asset-status="@data.PatientsCount" data-asset-status="@data.AppointmentCount" data-asset-status="@data.EncounterCount" data-asset-status="@data.Status">
+                            <td>@data.GroupId</td>
+                            <td>@data.ProviderGroupName</td>
+                            <td>@data.Speciality</td>
+                            <td>@data.ProvidersCount</td>
+                            <td>@data.PatientsCount</td>
+                            <td>@data.AppointmentCount</td>
+                            <td>@data.EncounterCount</td>
+                            <td>@data.Status</td>
+                            @*<td>
+                                <a class="btn btn-sm btn-warning" asp-controller="Asset" asp-action="Edit" asp-route-id="@data.GroupId">Edit</a>
+                                <a class="btn btn-sm btn-warning" asp-controller="Asset" asp-action="Delete" asp-route-id="@data.GroupId">Delete</a>
+                            </td>*@
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
