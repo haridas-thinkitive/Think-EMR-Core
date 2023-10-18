@@ -3,44 +3,268 @@
 @{
     ViewData["Title"] = "Index";
 }
+<style>
+    .card {
+        border: 1px solid #e0e0e0;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 10px;
+        text-align: center;
+        height: 100%; /* Set a fixed height for all cards */
+        background-color:aliceblue;
+    }
 
-<div class="container">
-    <div class="row">
-        <div class="col-8 offset-2">
-@*            <a class="btn btn-sm btn-success m-1" asp-controller="Asset" asp-action="Create">Create</a>
-*@            <table class="table table-bordered">
-                <thead>
-                    <tr class="text-center">
-                        <th>GroupId</th>
-                        <th>Provider Group Name</th>
-                        <th>Speciality</th>
-                        <th>Providers Count</th>
-                        <th>Patients Count</th>
-                        <th>Appointment Count</th>
-                        <th>Encounter Count</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody id="assetsTableBody">
-                    @foreach (var data in Model)
-                    {
-                        <tr class="text-center" data-asset-id="@data.GroupId" data-asset-name="@data.ProviderGroupName" data-asset-city="@data.Speciality" data-asset-country="@data.ProvidersCount" data-asset-status="@data.PatientsCount" data-asset-status="@data.AppointmentCount" data-asset-status="@data.EncounterCount" data-asset-status="@data.Status">
-                            <td>@data.GroupId</td>
-                            <td>@data.ProviderGroupName</td>
-                            <td>@data.Speciality</td>
-                            <td>@data.ProvidersCount</td>
-                            <td>@data.PatientsCount</td>
-                            <td>@data.AppointmentCount</td>
-                            <td>@data.EncounterCount</td>
-                            <td>@data.Status</td>
-                            @*<td>
-                                <a class="btn btn-sm btn-warning" asp-controller="Asset" asp-action="Edit" asp-route-id="@data.GroupId">Edit</a>
-                                <a class="btn btn-sm btn-warning" asp-controller="Asset" asp-action="Delete" asp-route-id="@data.GroupId">Delete</a>
-                            </td>*@
-                        </tr>
-                    }
-                </tbody>
-            </table>
+    .card-title {
+        font-size: 1.2rem;
+        margin-bottom: 10px; /* Add margin to separate title from text */
+    }
+
+    .card-text {
+        font-size: 1.5rem;
+        color: #007bff;
+    }
+
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    tr:hover {
+        background-color: #d9edf7;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .popup {
+        display: none;
+        position: absolute;
+        background-color: #fff;
+        border: 1px solid #ccc;
+        padding: 10px;
+        z-index: 1;
+    }
+        /* Additional styling as per your requirements */
+        .popup h1 {
+            font-size: 18px;
+        }
+
+    /* Styling for radio buttons and labels */
+    input[type="radio"] {
+        margin-right: 5px;
+    }
+
+    /* Style for the Cancel button */
+    #cancelDateRangeBtn {
+        display: none;
+        background-color: #ccc;
+        border: none;
+        color: white;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        cursor: pointer;
+    }
+
+    .button-size {
+        width: 100px;
+        height: 40px;
+    }
+
+</style>
+
+<div>
+    <div class="float-end">
+        <button id="dateRangeFilterBtn" class="btn btn-primary">Date Range</button>
+        <div id="dateRangePopup" class="popup">
+            <h1>Calander Range</h1>
+            <input type="radio" id="thisMonthRadio" name="dateRange" value="thisMonth">
+            <label for="thisMonthRadio">Month</label><br>
+
+            <input type="radio" id="allTimeRadio" name="dateRange" value="allTime">
+            <label for="allTimeRadio">All Time</label><br>
+            <div id="datepickerContainer" style="display: none;">
+                <label for="datepicker">Select a Date:</label>
+                <input type="date" id="datepicker">
+            </div>
+            <button id="applyDateRangeBtn" class="btn btn-success">Apply</button>
+            <button id="cancelDateRangeBtn" class="btn btn-danger">Cancel</button>
         </div>
-    </div>
+    </div><br><br>
+        <div>
+        <div class="row">
+            <div class="col-md-2 mb-2">
+                <div class="card">
+                    <div class="card-body">
+                        <div>
+                            <h5 class="card-title">Provider Groups</h5>
+                            <p class="card-text">255</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 mb-2">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Providers</h5>
+                        <p class="card-text">452</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 mb-2">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Patients</h5>
+                        <p class="card-text">526</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 mb-2">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Appointments</h5>
+                        <p class="card-text">48</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 mb-2">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Encounters</h5>
+                        <p class="card-text">35</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <div>
+                <table class="table table-bordered ">
+                    <thead>
+                        <tr class="text-center" style=" background-color: #E1F5FE;">
+                            <th>GroupId</th>
+                            <th>Provider Group Name</th>
+                            <th>Speciality</th>
+                            <th>Providers Count</th>
+                            <th>Patients Count</th>
+                            <th>Appointment Count</th>
+                            <th>Encounter Count</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="assetsTableBody">
+                        @foreach (var data in Model)
+                        {
+                            <tr class="text-center" data-asset-id="@data.GroupId" data-asset-name="@data.ProviderGroupName" data-asset-city="@data.Speciality" data-asset-country="@data.ProvidersCount" data-asset-status="@data.PatientsCount" data-asset-status="@data.AppointmentCount" data-asset-status="@data.EncounterCount" data-asset-status="@data.Status">
+                                <td>@data.GroupId</td>
+                                <td>@data.ProviderGroupName</td>
+                                <td>@data.Speciality</td>
+                                <td>@data.ProvidersCount</td>
+                                <td>@data.PatientsCount</td>
+                                <td>@data.AppointmentCount</td>
+                                <td>@data.EncounterCount</td>
+                                <td>
+                                    <div class="form-check form-switch">
+                                        <input id="statusCheckbox" class="form-check-input" type="checkbox" @(data.Status == true ? "checked" : "")>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        </div>
 </div>
+
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            $("#assetsTableBody").click(function () {
+                $.ajax({
+                    url: "https://localhost:7286/api/DashboardDetails/DashboardDetails",
+                    type: "GET",
+                    success: function (data) {
+                        $("#assetsTableBody").html(data);
+                    }
+                });
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            var $dateRangeFilterBtn = $('#dateRangeFilterBtn');
+            var $dateRangePopup = $('#dateRangePopup');
+            var $cancelDateRangeBtn = $('#cancelDateRangeBtn');
+            var $applyDateRangeBtn = $('#applyDateRangeBtn');
+            var $datepickerContainer = $('#datepickerContainer');
+            var $datepicker = $('#datepicker'); // Added date picker input field
+
+            $dateRangeFilterBtn.click(function () {
+                $dateRangePopup.show();
+                $cancelDateRangeBtn.show(); // Show the Cancel button
+            });
+
+            $applyDateRangeBtn.click(function () {
+                var selectedOption = $('input[name="dateRange"]:checked');
+                debugger;
+                if (selectedOption.length > 0) {
+                    var dateRange = selectedOption.val();
+                    if (dateRange === 'thisMonth') {
+                        var selectedDate = $datepicker.val();
+                        console.log("Selected Date: " + selectedDate);
+                    } else {
+                        console.log("Selected Date Range: " + dateRange);
+                    }
+                }
+
+                $dateRangePopup.hide();
+                $cancelDateRangeBtn.hide();
+            });
+
+            $cancelDateRangeBtn.click(function () {
+                $dateRangePopup.hide();
+                $cancelDateRangeBtn.hide();
+            });
+
+            $('input[name="dateRange"]').change(function () {
+                if (this.value === "thisMonth") {
+                    $datepickerContainer.show();
+                } else {
+                    $datepickerContainer.hide();
+                }
+            });
+
+            // Close the popup when clicking outside
+            $(document).mouseup(function (e) {
+                if (!$dateRangePopup.is(e.target) && !$dateRangeFilterBtn.is(e.target) && $dateRangePopup.has(e.target).length === 0) {
+                    $dateRangePopup.hide();
+                    $cancelDateRangeBtn.hide(); // Hide the Cancel button
+                }
+            });
+        });
+    </script>
+
+
+
+
+}
