@@ -25,4 +25,16 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 //pattern: "{controller=AdminDashboard}/{action=Index}/{id?}");
 
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+        name: "profile",
+        pattern: "Profile/Details/{id}",
+        defaults: new { controller = "Profile", action = "Details" }
+    );
+    endpoints.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Home}/{action=Index}/{id?}");
+});
+
 app.Run();
