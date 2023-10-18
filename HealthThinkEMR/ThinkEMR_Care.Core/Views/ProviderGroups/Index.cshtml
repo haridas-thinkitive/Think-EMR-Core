@@ -78,7 +78,7 @@
                         @Html.DisplayFor(modelItem => item.PhysicalAddress.State)
                     </td>
                     <td class="radiobutton">
-                        @Html.DisplayFor(modelItem => item.Status)
+                        <Html.DisplayFor(modelItem => item.Status)
                     </td>
                     <td>
                         @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
@@ -88,16 +88,3 @@
         </tbody>
     </table>
 </div>
-@*<script>
-    $(document).ready(function () {debugger;
-        $('tr[data-item-id]').click(function () {
-            var profileId = $(this).data('item-id');
-            window.location.href = '/Profile/Details/' + profileId;
-        });
-    });
-</script>*@
-@*<script>
-    $(document).ready(function () {
-        $('.js-example-basic-single').select2();
-    });
-</script>*@

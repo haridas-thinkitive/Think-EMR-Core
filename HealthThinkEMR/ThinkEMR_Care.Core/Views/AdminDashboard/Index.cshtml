@@ -11,7 +11,7 @@
         padding: 10px;
         text-align: center;
         height: 100%; /* Set a fixed height for all cards */
-        background-color:aliceblue;
+        background-color: aliceblue;
     }
 
     .card-title {
@@ -88,8 +88,20 @@
         height: 40px;
     }
 
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .col-md-2 {
+        flex: 1;
+        min-width: 0;
+    }
 </style>
 
+<div>
+    <h4 style="float: left;"><b>Dashboard</b></h4>
+</div>
 <div>
     <div class="float-end">
         <button id="dateRangeFilterBtn" class="btn btn-primary">Date Range</button>
@@ -108,7 +120,7 @@
             <button id="cancelDateRangeBtn" class="btn btn-danger">Cancel</button>
         </div>
     </div><br><br>
-        <div>
+    <div>
         <div class="row">
             <div class="col-md-2 mb-2">
                 <div class="card">
@@ -191,7 +203,7 @@
                 </table>
             </div>
         </div>
-        </div>
+    </div>
 </div>
 
 

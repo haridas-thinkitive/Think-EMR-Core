@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using ThinkEMR_Care.Core.Models;
-using ThinkEMR_Care.Core.ViewModels;
 
 namespace ThinkEMR_Care.Core.Controllers
 {
@@ -9,7 +8,6 @@ namespace ThinkEMR_Care.Core.Controllers
     {
         Uri baseAddress = new Uri("https://localhost:7286");
         private readonly HttpClient _client;
-        
 
         public LocationsController()
         {
@@ -21,7 +19,6 @@ namespace ThinkEMR_Care.Core.Controllers
         public async Task<ActionResult> Index()
         {
             List<Locations> locations = new List<Locations>();
-            List<ProviderGroupProfile> providers = new List<ProviderGroupProfile>();
             HttpResponseMessage response = await _client.GetAsync(_client.BaseAddress + "GetLocations");
 
             if (response.IsSuccessStatusCode)
@@ -37,13 +34,9 @@ namespace ThinkEMR_Care.Core.Controllers
                     ModelState.AddModelError(string.Empty, "API request failed");
                 }
             }
-            var viewModel = new LocationViewModel
-            {
-                Locations = locations,
-                ProviderGroupProfiles = providers
-            };
-
-            return View(viewModel);
+            
+            return View(locations);
         }
+        
     }
 }
