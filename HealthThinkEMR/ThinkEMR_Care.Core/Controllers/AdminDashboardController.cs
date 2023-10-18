@@ -7,19 +7,19 @@ namespace ThinkEMR_Care.Core.Controllers
 {
     public class AdminDashboardController : Controller
     {
-        private string baseUrl = "https://localhost:7286/GetAllDashboardRecord";
+        private string baseUrl = "https://localhost:7286/api/DashboardDetails/DashboardDetails";
         private HttpClient client=new HttpClient();
 
         [HttpGet]
         public IActionResult Index()
         {
-            List<AdminDashboard> adminDashboardList = new List<AdminDashboard>();   
+            List<AdminDashboard> adminDashboardList = new List<AdminDashboard>();
             HttpResponseMessage response = client.GetAsync(baseUrl).Result;
             if (response.IsSuccessStatusCode)
             {
                 string result = response.Content.ReadAsStringAsync().Result;
                 var data = JsonConvert.DeserializeObject<List<AdminDashboard>>(result);
-                if(data != null)
+                if (data != null)
                 {
                     adminDashboardList = data;
                 }
