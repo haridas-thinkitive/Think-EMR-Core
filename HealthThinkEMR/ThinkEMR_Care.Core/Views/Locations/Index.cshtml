@@ -20,8 +20,8 @@
 <br/>
 <br/>
 <div>
-    <table class="table table-bordered">
-        <thead>
+    <table class="table table-hover">
+        <thead class="table-active">
             <tr>
                 <th>Location Id</th>
                 <th>Location Name</th>
@@ -38,8 +38,7 @@
         <tbody>
             @foreach (var item in Model)
             {
-                <tr data-item-id="@item.Id" style="cursor: pointer;"
-                    onclick="location.href = '@(Url.Action("Details","Profile", new { Id = item.Id }))'">
+                <tr>
                     <td>
                         @Html.DisplayFor(modelItem => item.Id)
                     </td>
@@ -64,7 +63,7 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.ContactNumber)
                     </td>
-                    <td class="radiobutton" type="radiobutton">
+                    <td>
                         @Html.DisplayFor(modelItem => item.Status)
                     </td>
                     <td>

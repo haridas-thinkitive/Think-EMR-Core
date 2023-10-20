@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Reflection.Metadata;
+using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using ThinkEMR_Care.Core.Models;
@@ -14,11 +15,17 @@ namespace ThinkEMR_Care.Core.Controllers
     {
         Uri baseAddress = new Uri("https://localhost:7286");// Base URL of your API
         private readonly HttpClient _client;
+        private static ProviderGroupProfile pgprofiles = new ProviderGroupProfile();
 
         public ProviderGroupsController()
         {
             _client = new HttpClient();
             _client.BaseAddress = baseAddress;
+        }
+
+        public IActionResult CreatePartial()
+        {
+            return PartialView("Create", pgprofiles);
         }
 
         [HttpGet]
@@ -43,5 +50,33 @@ namespace ThinkEMR_Care.Core.Controllers
             
             return View(providerGroups);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Create(ProviderGroupProfile model)
+        {
+            if (ModelState.IsValid)
+            {
+
+                var json = JsonConvert.SerializeObject(model);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+
+                HttpResponseMessage response = await _client.PostAsync(_client.BaseAddress + "AddProviderGroups", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Index"); 
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "API request failed");
+                }
+            }
+
+            return View(model); 
+        }
+
+
     }
 }

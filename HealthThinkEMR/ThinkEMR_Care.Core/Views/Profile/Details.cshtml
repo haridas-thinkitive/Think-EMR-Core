@@ -26,7 +26,7 @@
     <div style="float: left;">
         <button class="btn btn-primary" onclick="location.href = '@(Url.Action("Details","Profile", new { Id = Model.Id }))'">Profile</button>
         <button class="btn btn-primary" onclick="location.href='@Url.Action("Index", "Locations")'">Locations</button>
-        <button class="btn btn-primary">Departments</button>
+        <button class="btn btn-primary" onclick="location.href='@Url.Action("Index", "Departments")'">Departments</button>
         <button class="btn btn-primary">Patients</button>
         <button class="btn btn-primary">Users</button>
     </div>
@@ -62,7 +62,7 @@
             </tr>
             <tr>
                 <th>Speciality </th>
-                <td>: @Model.SpecialityType</td>
+                <td>: @Model.SpecialityTypes</td>
             </tr>
             <tr>
                 <th>Contact Number </th>
