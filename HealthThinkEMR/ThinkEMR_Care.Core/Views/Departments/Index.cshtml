@@ -1,0 +1,59 @@
+﻿@model IEnumerable<ThinkEMR_Care.Core.Models.Departments>
+@{
+    ViewData["Title"] = "Departments";
+}
+
+<div id="partialZone">
+</div>
+
+@section Scripts{
+    <script>
+        $('#partialZone').load("/Profile/ProfilePartial")
+    </script>
+}
+<br />
+<div>
+    <h4 style="float: left;"><b>Departments</b></h4>
+    <button class="btn btn-primary" style="float: right;">Add Departments</button>
+</div>
+<br />
+<br />
+<div>
+    <table class="table table-hover">
+        <thead class="table-active">
+            <tr>
+                <th>Department Id</th>
+                <th>Department Name</th>
+                <th>Department Admin</th>
+                <th>Contact</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DepartmentId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DepartmentName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DepartmentAdmin)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ContactNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

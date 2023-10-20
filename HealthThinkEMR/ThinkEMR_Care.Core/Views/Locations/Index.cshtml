@@ -4,3 +4,74 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_ProfileLayout.cshtml";
 }
+
+<div id="partialZone">
+</div>
+
+@section Scripts{
+    <script>
+        $('#partialZone').load("/Profile/ProfilePartial")
+    </script>
+}
+<br />
+<div>
+    <h4 style="float: left;"><b>Locations</b></h4>
+    <button class="btn btn-primary" style="float: right;">Add Locations</button>
+</div>
+<br/>
+<br/>
+<div>
+    <table class="table table-hover">
+        <thead class="table-active">
+            <tr>
+                <th>Location Id</th>
+                <th>Location Name</th>
+                <th>Specialities</th>
+                <th>Address</th>
+                <th>City</th>
+                <th>State</th>
+                <th>Zip Code</th>
+                <th>Contact</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LocationName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.SpecialityType)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PhysicalAddress.Address1)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PhysicalAddress.City)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PhysicalAddress.State)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PhysicalAddress.ZipCode)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ContactNumber)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

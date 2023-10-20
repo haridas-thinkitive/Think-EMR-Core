@@ -4,11 +4,11 @@
     ViewData["Title"] = "Index";
 }
 <style>
-    .table-bordered{
-        color:black;
+    .table-bordered {
+        color: black;
     }
 </style>
-
+<br />
 <div class="row form-inline" style="display: flex; align-items: center;">
     <div class="col-3">
         <input type="text" id="searchInput" placeholder="Search by provider group name or speciality or contact" class="form-control" style="width: auto;">
@@ -31,14 +31,19 @@
         </select>
     </div>
     <div class="col-3" style="">
-        <button class="btn btn-primary btn-block" style="float: right;">Add New Provider Group</button>
+
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="float: right;">Add New Provider Group</button>
+
+        @*<button class="btn btn-primary btn-block" data-toggle="ajax-modal" data-target="#createmodal"
+        data-url="@Url.Action("Create","ProviderGroups")" style="float: right;">Add New Provider Group</button>*@
     </div>
 </div>
 </br>
 
 <div>
-    <table class="table table-bordered">
-        <thead>
+    <table class="table table-hover">
+        <thead class="table-active">
             <tr>
                 <th>Provider Group Id</th>
                 <th>Provider Group Name</th>
@@ -54,8 +59,8 @@
         <tbody>
             @foreach (var item in Model)
             {
-                <tr data-item-id="@item.Id" style="cursor: pointer;" 
-                onclick="location.href = '@(Url.Action("Details","Profile", new { Id = item.Id }))'">
+                <tr data-item-id="@item.Id" style="cursor: pointer;"
+                    onclick="location.href = '@(Url.Action("Details","Profile", new { Id = item.Id }))'">
                     <td>
                         @Html.DisplayFor(modelItem => item.Id)
                     </td>
@@ -63,7 +68,7 @@
                         @Html.DisplayFor(modelItem => item.ProviderGroupName)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.SpecialityType)
+                        @Html.DisplayFor(modelItem => item.SpecialityTypes)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.ContactNumber)
@@ -77,7 +82,7 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.PhysicalAddress.State)
                     </td>
-                    <td class="radiobutton">
+                    <td>
                         @Html.DisplayFor(modelItem => item.Status)
                     </td>
                     <td>
@@ -88,16 +93,13 @@
         </tbody>
     </table>
 </div>
-@*<script>
-    $(document).ready(function () {debugger;
-        $('tr[data-item-id]').click(function () {
-            var profileId = $(this).data('item-id');
-            window.location.href = '/Profile/Details/' + profileId;
-        });
-    });
-</script>*@
-@*<script>
-    $(document).ready(function () {
-        $('.js-example-basic-single').select2();
-    });
-</script>*@
+
+<div id="partialCreate">
+
+</div>
+@section Scripts{
+    <script>
+        $('#partialCreate').load("/ProviderGroups/CreatePartial")
+    </script>
+}
+
