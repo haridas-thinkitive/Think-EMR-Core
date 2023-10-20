@@ -8,6 +8,7 @@ namespace ThinkEMR_Care.Core.Controllers
     {
         Uri baseAddress = new Uri("https://localhost:7286");// Base URL of your API
         private readonly HttpClient _client;
+        private static ProviderGroupProfile pgprofiles = new ProviderGroupProfile();
 
         public ProfileController()
         {
@@ -37,6 +38,11 @@ namespace ThinkEMR_Care.Core.Controllers
             }
 
             return View(profile);
+        }
+
+        public IActionResult ProfilePartial()
+        {
+            return PartialView("_Profile", pgprofiles);
         }
 
     }

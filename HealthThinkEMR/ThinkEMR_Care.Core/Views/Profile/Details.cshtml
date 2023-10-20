@@ -15,12 +15,16 @@
         font-weight: bold;
     }
 
+    space {
+        border-collapse: separate;
+        border-spacing: 0 5px; 
+    }
 
 </style>
 
 <div>
     <div style="float: left;">
-        <button class="btn btn-primary">Profile</button>
+        <button class="btn btn-primary" onclick="location.href = '@(Url.Action("Details","Profile", new { Id = Model.Id }))'">Profile</button>
         <button class="btn btn-primary" onclick="location.href='@Url.Action("Index", "Locations")'">Locations</button>
         <button class="btn btn-primary" onclick="location.href='@Url.Action("Index", "Departments")'">Departments</button>
         <button class="btn btn-primary">Patients</button>
@@ -43,7 +47,7 @@
         </div>
     </div>
     <div class="col-9">
-        <table>
+        <table style="border-collapse: separate; border-spacing: 0 5px;">
             <tr>
                 <th>Provider Group Name</th>
                 <td>: @Model.ProviderGroupName</td>
@@ -76,14 +80,9 @@
     </div>
     <div style="clear: both;"></div>
 </div>
-@*
-@{
-    Layout = "_Layout.cshtml";
-    //Layout = "_ProfileLayout.cshtml"; // Specify the layout file you want to use
-}
-*@
+
 <div>
-    <table>
+    <table style="border-collapse: separate; border-spacing: 0 10px;">
         <tr>
             <th>Information </th>
             <td>: @Model.Information</td>
@@ -92,9 +91,9 @@
 </div>
 <div class="row">
     <div class="col-6" style="float: left; border-right: 1px solid #000;">
-        <table>
+        <table style="border-collapse: separate; border-spacing: 0 5px;">
             <tr>
-                <th>Practice Fax Number :</th>
+                <th>Practice Fax Number </th>
                 <td>: - </td>
             </tr>
             <tr>
@@ -116,11 +115,3 @@
         </table>
     </div>
 </div>
-
-
-@*<script>
-    document.getElementById("locationsButton").onclick = function () {
-        var url = '@Url.Action("Locations", "Location")';
-        window.location.href = url;
-    };
-</script>*@
