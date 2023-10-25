@@ -52,30 +52,6 @@
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light " style="background-color:aliceblue">
-        <a class="navbar-brand" href="/"><h2 style="color:dodgerblue"><b>  thinkEMR</b></h2></a>    
-    </nav>
-
-    <div class="sidenav" style="background-color:aliceblue">
-        <ul class="nav flex-column">
-            <li>
-                <a asp-area="" asp-controller="AdminDashboard" asp-action="Index"><i class="bi bi-house"></i> Dashboard</a>
-            </li>
-            <li>
-                <a asp-area="" asp-controller="ProviderGroups" asp-action="Index"><i class="bi bi-people-fill"></i> Provider Group</a>
-            </li>
-            <li>
-                <a asp-area="" asp-controller="" asp-action="Index"><i class="bi bi-collection"></i> Master</a>
-            </li>
-            <li>
-                <a asp-area="" asp-controller="" asp-action="Index"><i class="bi bi-gear-fill"></i> Settings</a>
-            </li>
-            <li>
-                <a asp-area="" asp-controller="" asp-action="Index"><i class="bi bi-box-arrow-right"></i> Logout</a>
-            </li>
-        </ul>
-    </div>
-
     <div class="main">
         <main role="main" class="pb-3">
             @RenderBody()

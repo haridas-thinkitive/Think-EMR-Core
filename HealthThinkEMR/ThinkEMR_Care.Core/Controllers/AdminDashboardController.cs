@@ -7,7 +7,7 @@ namespace ThinkEMR_Care.Core.Controllers
 {
     public class AdminDashboardController : Controller
     {
-        private string baseUrl = "https://localhost:7286/api/DashboardDetails/DashboardDetails";
+        private string baseUrl = "https://localhost:7286/api/DashboardDetails/DashboardDetailsInfo";
         private HttpClient client=new HttpClient();
 
         [HttpGet]
