@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
 
+
     <style>
         body {
             font-family: "Lato", sans-serif;
@@ -18,7 +19,7 @@
         }
 
         .navbar {
-            z-index: 3; /* Ensure the navbar is on top of other elements */
+            z-index: 3; 
         }
 
         .sidenav {
@@ -51,15 +52,15 @@
             margin-left: 200px;
             padding: 0px 10px;
         }
+
+        .swal2-confirm, .swal2-cancel {
+            width: 50%;
+        }
     </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light " style="background-color:aliceblue">
-        <a class="navbar-brand" href="/"><h2 style="color:dodgerblue"><b>&nbsp; thinkEMR</b></h2></a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+        <a class="navbar-brand" href="/"><h2 style="color:dodgerblue; margin:14px"><b>thinkEMR</b></h2></a>  
     </nav>
 
     <div class="sidenav" style="background-color:aliceblue">
@@ -77,10 +78,34 @@
                 <a asp-area="" asp-controller="" asp-action="Index"><i class="bi bi-gear-fill"></i> Settings</a>
             </li>
             <li>
-                <a asp-area="" asp-controller="" asp-action="Index"><i class="bi bi-box-arrow-right"></i> Logout</a>
+                <a asp-area="" asp-controller="AdminDashboard" asp-action="Logout" id="logoutButton">
+                    <i class="bi bi-box-arrow-right"></i> Logout
+                </a>
             </li>
         </ul>
     </div>
+
+
+    <script>
+        document.getElementById('logoutButton').addEventListener('click', function (e) {
+            e.preventDefault();
+
+            Swal.fire({
+                title: 'Want to logout ?',
+                text: 'Are you shure ?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, Log me out',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '@Url.Action("Logout", "AdminDashboard")';
+                } else {
+                    // User canceled, stay on the dashboard
+                }
+            });
+        });
+    </script>
 
     <div class="main">
         <main role="main" class="pb-3">

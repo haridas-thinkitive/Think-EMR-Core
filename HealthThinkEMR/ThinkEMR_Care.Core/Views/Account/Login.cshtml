@@ -1,0 +1,80 @@
+﻿@model ThinkEMR_Care.Core.Models.LoginModel
+@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_Layout_Login.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .container {
+            display: flex;
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+            height: 100vh;
+            margin:0;
+            padding:0;
+            grid-template-columns: 1fr 1fr; /* Two equal columns */
+        }
+
+        .left-side {
+            flex: 1;
+            padding: 20px;
+            align-items: center;
+            margin: 0; 
+            padding: 0;
+        }
+
+        .right-side {
+            flex: 1;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="row d-flex">
+        <div class="left-side">
+            <h1 style="color:dodgerblue">ThinkEMR</h1>
+            <div>
+                <div class="container">
+                    <!-- Content for the left part -->
+                    <form asp-controller="Account" asp-action="Login" method="post">
+                        <div class="form-group">
+                            <h2 style="color:dodgerblue ; font:bold">Hey,good to see you</h2> <br />
+                            <h4 style="color:dodgerblue ; font:bold">Lets sign in you</h4><br />
+                            <input asp-for="UserName" class="form-control" style="width: 400px;" autocomplete="off" placeholder="Email" required>
+                            <span class="text-danger">@TempData["errormessage"]</span>
+                        </div><br />
+
+                        <div class="form-group">
+                            <input asp-for="Password" type="password" class="form-control" style="width: 400px;" autocomplete="off" placeholder="Password" required>
+                            <span class="text-danger">@TempData["errormessage"]</span>
+                        </div>
+
+
+                        <div class="form-group">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div class="form-check" style="margin-right: 10px;">
+                                    <input class="form-check-input" type="checkbox" id="rememberMe">
+                                    <label class="form-check-label" for="rememberMe" style="color: dodgerblue;">Remember me</label>
+                                </div>
+                                <button type="button" class="btn btn-link" style="color: dodgerblue; text-decoration: none;" onclick="window.location.href='/Account/ForgotPassword '">Forgot password?</button>
+                            </div>
+                        </div><br />
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary btn-block" style="width:400px;">Lets get started</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="right-side">
+            <div>
+                <img src="~/Login1.jpg">
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
