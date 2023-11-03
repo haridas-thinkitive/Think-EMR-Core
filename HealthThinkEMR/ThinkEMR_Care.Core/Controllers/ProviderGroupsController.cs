@@ -2,8 +2,8 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
-using System.Reflection.Metadata;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -28,6 +28,12 @@ namespace ThinkEMR_Care.Core.Controllers
             return PartialView("Create", pgprofiles);
         }
 
+        public IActionResult EditPartial()
+        {
+            var pgprofile = new ProviderGroupProfile();
+            return PartialView("Edit", pgprofile);
+        }
+
         [HttpGet]
         public async Task<ActionResult> Index()
         {
@@ -47,7 +53,7 @@ namespace ThinkEMR_Care.Core.Controllers
                     ModelState.AddModelError(string.Empty, "API request failed");
                 }
             }
-            
+
             return View(providerGroups);
         }
 
@@ -57,26 +63,98 @@ namespace ThinkEMR_Care.Core.Controllers
         {
             if (ModelState.IsValid)
             {
-
-                var json = JsonConvert.SerializeObject(model);
-                var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-
-                HttpResponseMessage response = await _client.PostAsync(_client.BaseAddress + "AddProviderGroups", content);
-
-                if (response.IsSuccessStatusCode)
+                try
                 {
-                    return RedirectToAction("Index"); 
+                    var json = JsonConvert.SerializeObject(model);
+                    var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+
+                    HttpResponseMessage response = await _client.PostAsync(_client.BaseAddress + "AddProviderGroups", content);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, "API request failed");
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    ModelState.AddModelError(string.Empty, "API request failed");
+                    ModelState.AddModelError(string.Empty, "API request failed: " + ex.Message);
                 }
             }
 
-            return View(model); 
+            return View(model);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Edit(ProviderGroupProfile model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var json = JsonConvert.SerializeObject(model);
+                    var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                    HttpResponseMessage response = await _client.PutAsync(_client.BaseAddress + "EditProviderGroups/" + model.Id, content);  // Adjust the endpoint to match your API
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, "API request failed");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError(string.Empty, "API request failed: " + ex.Message);
+                }
+            }
+            return View(model);
+        }
+
+        
+        [HttpGet]
+        public async Task<ActionResult<ProviderGroupProfile>> GetProviderGroup(int id)
+        {
+            try
+            {
+                ProviderGroupProfile providerGroupProfile = new ProviderGroupProfile();
+                HttpResponseMessage response = await _client.GetAsync(_client.BaseAddress + $"GetProviderGroupsById/" + id);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string result = await response.Content.ReadAsStringAsync();
+                    if (string.IsNullOrEmpty(result))
+                    {
+                        return RedirectToAction("Index"); // Handle no content found
+                    }
+
+                    var data = JsonConvert.DeserializeObject<ProviderGroupProfile>(result);
+                    if (data != null)
+                    {
+                        providerGroupProfile = data;
+                    }
+                    return providerGroupProfile;
+                }
+                else if (response.StatusCode == HttpStatusCode.NoContent)
+                {
+                    return RedirectToAction("Index"); // Handle no content found
+                }
+            }
+            catch (Exception ex)
+            {
+                throw; 
+            }
+
+            return RedirectToAction("Index");
+        }
 
     }
 }

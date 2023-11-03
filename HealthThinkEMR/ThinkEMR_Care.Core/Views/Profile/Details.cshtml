@@ -17,7 +17,7 @@
 
     space {
         border-collapse: separate;
-        border-spacing: 0 5px; 
+        border-spacing: 0 5px;
     }
 
 </style>
@@ -73,9 +73,10 @@
                 <td>: @Model.GroupNPINumber</td>
             </tr>
             <tr>
-                <th>Physical Address </th>
-                <td>: @Model.PhysicalAddressId</td>
+                <th>Physical Address</th>
+                <td>: @Model.PhysicalAddress.Address1</td>
             </tr>
+
         </table>
     </div>
     <div style="clear: both;"></div>
@@ -94,24 +95,36 @@
         <table style="border-collapse: separate; border-spacing: 0 5px;">
             <tr>
                 <th>Practice Fax Number </th>
-                <td>: - </td>
+                <td>: Yet to implement </td>
             </tr>
             <tr>
                 <th>EHR System </th>
-                <td>: - </td>
+                <td>: Not implemented yet </td>
             </tr>
             <tr>
                 <th>Billing Address </th>
-                <td>: - </td>
+                <td>: @Model.BillingAddress.Address1 </td>
             </tr>
         </table>
     </div>
     <div class="col-6">
-        <table>
-            <tr>
-                <th>Provider Group Hours </th>
-                <td>: - </td>
-            </tr>
-        </table>
+        <div class="col">
+            <table>
+                <tr>
+                    <th>Provider Group Hours : </th>
+                </tr>
+                <tr>
+                    <td>
+                        <br />Monday : @Model.PracticeOfficeHours.Monday
+                        <br />Tuesday : @Model.PracticeOfficeHours.Tuesday
+                        <br />Wednesday : @Model.PracticeOfficeHours.Wednesday
+                        <br />Thursday : @Model.PracticeOfficeHours.Thursday
+                        <br />Friday : @Model.PracticeOfficeHours.Friday
+                        <br />Saturday : @Model.PracticeOfficeHours.Saturday
+                        <br />Sunday : @Model.PracticeOfficeHours.Sunday
+                    </td>
+                </tr>
+            </table>
+        </div>
     </div>
 </div>

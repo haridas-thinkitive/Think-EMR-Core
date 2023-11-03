@@ -1,0 +1,61 @@
+﻿@model ThinkEMR_Care.Core.Models.Departments
+@{
+    ViewData["Title"] = "Edit Department";
+}
+
+@using (Html.BeginForm("Edit", "Departments", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <!-- Modal -->
+    <div class="modal fade" id="staticEditBackdrop" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="form">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="modal-content">
+                    <div class="modal-header" style="text-align: center;">
+                        <h5 class="modal-title" style="text-align: center;"><b>Edit Department</b></h5>
+                    </div>
+                    <div class="modal-body">
+                        <div>
+                            <input type="hidden" asp-for="Id" id="editId" />
+                            <div class="d-flex">
+                                <div class="form-group col-md-6">
+                                    <label asp-for="DepartmentId">Department Id</label>
+                                    <input asp-for="DepartmentId" class="form-control" id="editDepartmentId" />
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label asp-for="DepartmentName">Department Name</label>
+                                    <input asp-for="DepartmentName" class="form-control" id="editDepartmentName" />
+                                </div>
+                            </div>
+
+                            <div class="d-flex">
+                                <div class="form-group col-md-6">
+                                    <label asp-for="DepartmentAdmin">Department Admin</label>
+                                    <select id="DepartmentAdmin" asp-for="DepartmentAdmin" class="form-control" id="editDepartmentAdmin">
+                                        <option value="Gertude Bostic   ">Gertude Bostic</option>
+                                        <option value="Genna Littlefield">Genna Littlefield</option>
+                                        <option value="Eldora Clough">Eldora Clough</option>
+                                        <option value="Francesco Sell">Francesco Sell</option>
+                                        <option value="Nannie Rutherford">Nannie Rutherford</option>
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label asp-for="ContactNumber">Contact Number</label>
+                                    <input asp-for="ContactNumber" class="form-control" id="editContact" />
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary" id="saveRecordButton">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+}

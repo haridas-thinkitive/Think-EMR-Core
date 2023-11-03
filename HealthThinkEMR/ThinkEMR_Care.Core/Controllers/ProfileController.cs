@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Net;
 using ThinkEMR_Care.Core.Models;
 
 namespace ThinkEMR_Care.Core.Controllers
@@ -34,7 +35,7 @@ namespace ThinkEMR_Care.Core.Controllers
 
             if (profile == null)
             {
-                return RedirectToAction("Index"); // Redirect to the index page if the profile with the given ID doesn't exist
+                return RedirectToAction("Index"); 
             }
 
             return View(profile);
