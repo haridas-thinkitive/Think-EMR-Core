@@ -10,11 +10,18 @@
     <script>
         $('#partialZone').load("/Profile/ProfilePartial")
     </script>
+    <script>
+        $('#adddepartment').load("/Departments/CreatePartial")
+    </script>
+   <script>
+        $('#editdepartment').load("/Departments/DetailsPartial")
+    </script>
+   
 }
 <br />
 <div>
     <h4 style="float: left;"><b>Departments</b></h4>
-    <button class="btn btn-primary" style="float: right;">Add Departments</button>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="float: right;">Add Departments</button>
 </div>
 <br />
 <br />
@@ -33,27 +40,71 @@
         <tbody>
             @foreach (var item in Model)
             {
-                <tr>
+                <tr class="text-center" data-asset-id="@item.Id" data-asset-speciality="@item.DepartmentId" data-asset-type="@item.DepartmentName" data-asset-type="@item.DepartmentAdmin" data-asset-type="@item.ContactNumber" >
                     <td>
-                        @Html.DisplayFor(modelItem => item.DepartmentId)
+                        @*@Html.DisplayFor(modelItem => item.DepartmentId)*@
+                        @item.DepartmentId
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.DepartmentName)
+                        @item.DepartmentName
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.DepartmentAdmin)
+                        @item.DepartmentAdmin
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.ContactNumber)
+                        @item.ContactNumber
                     </td>
-                    <td>
+                    @*<td>
                         @Html.DisplayFor(modelItem => item.Status)
+                    </td>*@
+                    <td>
+                        <div class="form-check form-switch">
+                            <input id="statusCheckbox" class="form-check-input" type="checkbox" @* @(data.Status == true ? "checked" : "")*@>
+                        </div>
                     </td>
                     <td>
-                        @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                        @*<i class="bi bi-pencil"   data-bs-target="#staticEditBackdrop" ></i>  *@
+                        <i class="bi bi-pencil" data-bs-toggle="modal"  id="editButton" onclick="Edit('@item.Id')"></i>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
 </div>
+<div id="adddepartment">
+</div>
+<div id="editdepartment">
+</div>
+
+<script>
+    function Edit(id) {
+        $.ajax({
+            url: '/Departments/Edit/' + id,
+            type: "Get",
+            contentType: 'application/json;charset=utf-8',
+            dataType: 'json', // Use 'dataType' instead of 'datatype'
+            success: function (data) {
+               
+                $('#staticEditBackdrop').modal('show');
+                $('#staticEditBackdrop').on('shown.bs.modal', function () {
+
+                    $('#editId').val(data.id);
+                    $('#editDepartmentId').val(data.departmentId);
+                    $('#editDepartmentName').val(data.departmentName);
+                    $('#editDepartmentAdmin').val(data.departmentAdmin);
+                    $('#editContact').val(data.contactNumber);
+                   
+                    if (data.status) {
+                        $("#Status").attr('checked', 'checked')
+                    }
+                })
+            },
+            error: function () {
+                alert('Failed to retrieve departments data.');
+            }
+        });
+    }
+    function closeModal() {
+        $('#staticEditBackdrop').modal('hide');
+    }
+</script>

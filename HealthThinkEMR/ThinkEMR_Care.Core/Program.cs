@@ -2,6 +2,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+// Add this inside the ConfigureServices method if needed.
+builder.Services.AddMvc().AddRazorPagesOptions(options =>
+{
+    options.Conventions.AddPageRoute("/Departments/Edit", "/Departments/Edit/{id?}");
+});
 
 var app = builder.Build();
 

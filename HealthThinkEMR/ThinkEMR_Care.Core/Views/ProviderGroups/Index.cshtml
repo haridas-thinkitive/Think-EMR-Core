@@ -1,4 +1,5 @@
-﻿@model IEnumerable<ThinkEMR_Care.Core.Models.ProviderGroupProfile>
+﻿@using Newtonsoft.Json;
+@model IEnumerable<ThinkEMR_Care.Core.Models.ProviderGroupProfile>
 
 @{
     ViewData["Title"] = "Index";
@@ -8,6 +9,7 @@
         color: black;
     }
 </style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <br />
 <div class="row form-inline" style="display: flex; align-items: center;">
     <div class="col-3">
@@ -15,7 +17,8 @@
     </div>
     <div class="col-3" style="display: flex; align-items: center;">
         <label for="Status"><b>Status&nbsp;</b></label>
-        <select id="Status" class="form-control">
+        <select id="StatusFilter" class="form-control">
+            <option value="All">All</option>
             <option value="Active">Active</option>
             <option value="Inactive">Inactive</option>
         </select>
@@ -31,18 +34,14 @@
         </select>
     </div>
     <div class="col-3" style="">
-
         <!-- Button trigger modal -->
         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="float: right;">Add New Provider Group</button>
-
-        @*<button class="btn btn-primary btn-block" data-toggle="ajax-modal" data-target="#createmodal"
-        data-url="@Url.Action("Create","ProviderGroups")" style="float: right;">Add New Provider Group</button>*@
     </div>
 </div>
 </br>
 
 <div>
-    <table class="table table-hover">
+    <table id="providergroupdata" class="table table-hover">
         <thead class="table-active">
             <tr>
                 <th>Provider Group Id</th>
@@ -59,16 +58,16 @@
         <tbody>
             @foreach (var item in Model)
             {
-                <tr data-item-id="@item.Id" style="cursor: pointer;"
-                    onclick="location.href = '@(Url.Action("Details","Profile", new { Id = item.Id }))'">
-                    <td>
+                <tr data-item-id="@item.Id">
+                    <td style="cursor: pointer;" onclick="location.href = '@(Url.Action("Details","Profile", new { Id = item.Id }))'">
                         @Html.DisplayFor(modelItem => item.Id)
                     </td>
-                    <td>
+                    <td style="cursor: pointer;" onclick="location.href = '@(Url.Action("Details","Profile", new { Id = item.Id }))'">
                         @Html.DisplayFor(modelItem => item.ProviderGroupName)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.SpecialityTypes)
+                        @item.SpecialityTypes
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.ContactNumber)
@@ -82,24 +81,120 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.PhysicalAddress.State)
                     </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Status)
+                    <td data-item="@item.Status">
+                        <div>
+                            <div class="form-check form-switch">
+                                <input id="StatusFilter" class="form-check-input" type="checkbox" onclick="status">
+                            </div>
+                        </div>
                     </td>
+
                     <td>
-                        @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                        <i class="bi bi-pencil" data-bs-toggle="modal" id="editButton" onclick="Edit('@item.Id')"></i>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
 </div>
+<div id="partialCreate"></div>
+<div id="partialEdit"></div>
 
-<div id="partialCreate">
-
-</div>
-@section Scripts{
+@section Scripts {
     <script>
         $('#partialCreate').load("/ProviderGroups/CreatePartial")
     </script>
+    <script>
+        $('#partialEdit').load("/ProviderGroups/EditPartial")
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#StatusFilter").change(function () {
+                filterTableData();
+            });
+
+            $("#searchInput").on("input", function () {
+                filterTableData();
+            });
+
+            $("#StatusFilter").val("All").change();
+
+            function filterTableData() {
+                var selectedStatus = $("#StatusFilter").val();
+                var searchQuery = $("#searchInput").val().toLowerCase();
+
+                $("tr[data-item-id]").hide();
+
+                $("tr[data-item-id]").each(function () {
+                    var row = $(this);
+                    var rowStatus = row.data("status");
+                    var rowText = row.text().toLowerCase();
+
+                    if ((selectedStatus === "All" || rowStatus === selectedStatus) &&
+                        (searchQuery === "" || rowText.indexOf(searchQuery) !== -1)) {
+                        row.show();
+                    }
+                });
+            }
+        });
+    </script>
+
+    <script>
+        function Edit(id) {
+            $.ajax({
+                url: '/ProviderGroups/GetProviderGroup/' + id,
+                type: 'get',
+                contentType: 'application/json;charset=utf-8',
+                dataType: 'json', // Use 'dataType' instead of 'datatype'
+                success: function (data) {
+                    $('#editStaticBackdrop').modal('show');
+                    $('#editStaticBackdrop').on('shown.bs.modal', function () {
+                        
+                        $('#editId').val(data.id);
+                        $('#editProviderGroupName').val(data.providerGroupName);
+                        $('#editContactNumber').val(data.contactNumber);
+                        $('#editGroupNPINumber').val(data.groupNPINumber);
+                        $('#editSpecialityTypes').val(data.specialityTypes);
+                        $('#editWebsite').val(data.website);
+                        $('#editEmailId').val(data.emailId);
+                        $('#editFaxId').val(data.faxId);
+                        $('#editInformation').val(data.information);
+                        
+                        $('#paAddress1').val(data.physicalAddress.address1);
+                        $('#paAddress2').val(data.physicalAddress.address2);
+                        $('#paCity').val(data.physicalAddress.city);
+                        $('#paState').val(data.physicalAddress.state);
+                        $('#paCountry').val(data.physicalAddress.country);
+                        $('#paZipCode').val(data.physicalAddress.zipCode);
+
+                        $('#baSameasPa').val(data.billingAddress.sameAsPhysicalAddress);
+                        $('#baAddress1').val(data.billingAddress.address1);
+                        $('#baAddress2').val(data.billingAddress.address2);
+                        $('#baCity').val(data.billingAddress.city);
+                        $('#baState').val(data.billingAddress.state);
+                        $('#baCountry').val(data.billingAddress.country);
+                        $('#baZipCode').val(data.billingAddress.zipCode);
+
+                        $('#Monday').val(data.practiceOfficeHours.monday);
+                        $('#Tuesday').val(data.practiceOfficeHours.tuesday);
+                        $('#Wednesday').val(data.practiceOfficeHours.wednesday);
+                        $('#Thursday').val(data.practiceOfficeHours.thursday);
+                        $('#Friday').val(data.practiceOfficeHours.friday);
+                        $('#Saturday').val(data.practiceOfficeHours.saturday);
+                        $('#Sunday').val(data.practiceOfficeHours.sunday);
+                    })
+                },
+                error: function () {
+                    // Handle the error
+                    alert('Failed to retrieve Provider Group data.');
+                }
+            });
+        }
+        function closeModal() {
+            $('#staticEditBackdrop').modal('hide');
+        }
+    </script>
+
 }
+
 

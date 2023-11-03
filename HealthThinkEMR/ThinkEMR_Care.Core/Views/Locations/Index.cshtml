@@ -3,22 +3,18 @@
 @{
     ViewData["Title"] = "Location";
 }
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-<div id="partialZone">
-</div>
-
-@section Scripts{
-    <script>
-        $('#partialZone').load("/Profile/ProfilePartial")
-    </script>
-}
+<div id="partialZone"></div>
 <br />
+<div id="details-container"></div>
 <div>
     <h4 style="float: left;"><b>Locations</b></h4>
-    <button class="btn btn-primary" style="float: right;">Add Locations</button>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="float: right;">Add New Location</button>
 </div>
-<br/>
-<br/>
+<br />
+<br />
 <div>
     <table class="table table-hover">
         <thead class="table-active">
@@ -39,12 +35,13 @@
             @foreach (var item in Model)
             {
                 <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Id)
+                    <td style="cursor: pointer;" onclick="locationDetails('@item.Id')">
+                        @Html.DisplayFor(modelItem => item.LocationId)
                     </td>
-                    <td>
+                    <td style="cursor: pointer;" onclick="locationDetails('@item.Id')">
                         @Html.DisplayFor(modelItem => item.LocationName)
                     </td>
+
                     <td>
                         @Html.DisplayFor(modelItem => item.SpecialityType)
                     </td>
@@ -63,14 +60,144 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.ContactNumber)
                     </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Status)
+                    <td data-item="@item.Status">
+                        <div>
+                            <div class="form-check form-switch">
+                                <input id="StatusFilter" class="form-check-input" type="checkbox" onclick="status">
+                            </div>
+                        </div>
                     </td>
                     <td>
-                        @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                        <i class="bi bi-pencil" data-bs-toggle="modal" id="editButton" onclick="Edit('@item.Id')"></i>
                     </td>
                 </tr>
             }
         </tbody>
     </table>
 </div>
+
+<div id="addlocation"></div>
+
+<div id="detailslocation"></div>
+
+<div id="partialEdit"></div>
+
+@section Scripts{
+    <script>
+        $('#partialZone').load("/Profile/ProfilePartial")
+    </script>
+
+    <script>
+        $('#addlocation').load("/Locations/CreatePartial")
+    </script>
+
+    <script>
+        $('#details-container').load("/Locations/DetailsPartial")
+
+    </script>
+
+    <script>
+        $('#partialEdit').load("/Locations/EditPartial")
+    </script>
+
+    <script>
+        function Edit(id) {
+            $.ajax({
+                url: '/Locations/Details/' + id,
+                type: 'get',
+                contentType: 'application/json;charset=utf-8',
+                dataType: 'json', // Use 'dataType' instead of 'datatype'
+                success: function (data) {
+                    $('#editStaticBackdrop').modal('show');
+                    $('#editStaticBackdrop').on('shown.bs.modal', 
+                    function () {
+
+                        $('#idEdit').val(data.id);
+                        $('#editLocationName').val(data.locationName);
+                        $('#editLocationId').val(data.locationId);
+                        $('#editSpecialityTypes').val(data.specialityType);
+                        $('#editContactNumber').val(data.contactNumber);
+                        $('#editEmailId').val(data.emailId);
+                        $('#editFaxId').val(data.faxId);
+                        $('#editInformation').val(data.information);
+
+                        $('#paAddress1').val(data.physicalAddress.address1);
+                        $('#paAddress2').val(data.physicalAddress.address2);
+                        $('#paCity').val(data.physicalAddress.city);
+                        $('#paState').val(data.physicalAddress.state);
+                        $('#paCountry').val(data.physicalAddress.country);
+                        $('#paZipCode').val(data.physicalAddress.zipCode);
+
+                        $('#baSameasPa').val(data.billingAddress.sameAsPhysicalAddress);
+                        $('#baAddress1').val(data.billingAddress.address1);
+                        $('#baAddress2').val(data.billingAddress.address2);
+                        $('#baCity').val(data.billingAddress.city);
+                        $('#baState').val(data.billingAddress.state);
+                        $('#baCountry').val(data.billingAddress.country);
+                        $('#baZipCode').val(data.billingAddress.zipCode);
+
+                        $('#Monday').val(data.practiceOfficeHours.monday);
+                        $('#Tuesday').val(data.practiceOfficeHours.tuesday);
+                        $('#Wednesday').val(data.practiceOfficeHours.wednesday);
+                        $('#Thursday').val(data.practiceOfficeHours.thursday);
+                        $('#Friday').val(data.practiceOfficeHours.friday);
+                        $('#Saturday').val(data.practiceOfficeHours.saturday);
+                        $('#Sunday').val(data.practiceOfficeHours.sunday);
+                    })
+                },
+                error: function () {
+                    alert('Failed to retrieve Provider Group data.');
+                }
+            });
+        }
+        function closeModal() {
+            $('#staticEditBackdrop').modal('hide');
+        }
+    </script>
+
+    <script>
+        function locationDetails(locationId) {
+            $.ajax({
+                url: '@Url.Action("Details", "Locations")' + '/' + locationId,
+                type: "get",
+                contentType: 'application/json;charset=utf-8',
+                dataType: 'json',
+                success: function (data) {
+                    $('#offcanvasRight').offcanvas('show');
+                    $('#offcanvasRight').on('shown.bs.offcanvas', 
+                    function () {
+                        $('#idEdit').val(data.id);
+                        $('#detailsLocationName').text(data.locationName);
+                        $('#detailsLocationId').text(data.locationId);
+                        $('#detailsSpecialityTypes').text(data.specialityType);
+                        $('#detailsContactNumber').text(data.contactNumber);
+                        $('#detailsEmailId').text(data.emailId);
+                        $('#detailsFaxId').text(data.faxId);
+
+                        // Populate physical address
+                        $('#detailsPaAddress1').text(data.physicalAddress ? data.physicalAddress.address1 : "");
+                        $('#detailsPaAddress2').text(data.physicalAddress ? data.physicalAddress.address2 : "");
+                        $('#detailsPaCity').text(data.physicalAddress ? data.physicalAddress.city : "");
+                        $('#detailsPaState').text(data.physicalAddress ? data.physicalAddress.state : "");
+                        $('#detailsPaCountry').text(data.physicalAddress ? data.physicalAddress.country : "");
+                        $('#detailsPaZipCode').text(data.physicalAddress ? data.physicalAddress.zipCode : "");
+
+                        // Populate billing address
+                        $('#detailsBaAddress1').text(data.billingAddress ? data.billingAddress.address1 : "");
+                        $('#detailsBaAddress2').text(data.billingAddress ? data.billingAddress.address2 : "");
+                        $('#detailsBaCity').text(data.billingAddress ? data.billingAddress.city : "");
+                        $('#detailsBaState').text(data.billingAddress ? data.billingAddress.state : "");
+                        $('#detailsBaCountry').text(data.billingAddress ? data.billingAddress.country : "");
+                        $('#detailsBaZipCode').text(data.billingAddress ? data.billingAddress.zipCode : "");
+
+                        $('#detailsMonday').text(data.practiceOfficeHours.monday);
+                    });
+                },
+                error: function () {
+                    alert('Failed to retrieve location details.');
+                }
+            });
+        }
+    </script>
+
+}

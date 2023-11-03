@@ -1,0 +1,189 @@
+﻿@model ThinkEMR_Care.Core.Models.ProviderGroupProfile
+@{
+    ViewData["Title"] = "Edit ProviderGroupProfile";
+}
+
+@using (Html.BeginForm("Edit", "ProviderGroups", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <hr />
+    @*<div class="modal fade" id="editStaticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="form">*@
+    <div class="modal fade" id="editStaticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="editStaticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+
+            <div class="modal-content">
+                <div class="modal-header" style="text-align: center;">
+                    <h5 class="modal-title" style="text-align: center;"><b>Edit Provider Group</b></h5>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <form asp-action="Edit">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <div class="form-group">
+                                <input type="hidden" asp-for="Id" class="form-control" id="editId" />
+                            </div>
+                            <div class="form-group">
+                                <input type="hidden" asp-for="Image" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="ProviderGroupName" class="control-label"></label>
+                                <input id="editProviderGroupName" asp-for="ProviderGroupName" class="form-control" />
+                                @*<span asp-validation-for="" class="text-danger"></span>*@
+                            </div>
+                            <div class="d-flex">
+                                <div class="form-group">
+                                    <label asp-for="ContactNumber" class="control-label"></label>
+                                    <input id="editContactNumber" asp-for="ContactNumber" class="form-control" />
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="GroupNPINumber" class="control-label"></label>
+                                    <input id="editGroupNPINumber" asp-for="GroupNPINumber" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="d-flex">
+                                <div class="form-group">
+                                    <label asp-for="Website" class="control-label"></label>
+                                    <input id="editWebsite" asp-for="Website" class="form-control" />
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="SpecialityTypes" class="control-label"></label>
+                                    <input id="editSpecialityTypes" asp-for="SpecialityTypes" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="d-flex">
+                                <div class="form-group">
+                                    <label asp-for="EmailId" class="control-label"></label>
+                                    <input id="editEmailId" asp-for="EmailId" class="form-control" />
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="FaxId" class="control-label"></label>
+                                    <input id="editFaxId" asp-for="FaxId" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Information" class="control-label"></label>
+                                <input id="editInformation" asp-for="Information" class="form-control" />
+                            </div>
+
+                            <h5 class="modal-title"><b>Physical Address - </b></h5><br />
+                            <div>
+                                <div class="d-flex">
+                                    <div class="form-group">
+                                        <label asp-for="PhysicalAddress.Address1">Address1</label>
+                                        <input id="paAddress1" asp-for="PhysicalAddress.Address1" class="form-control" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="PhysicalAddress.Address2">Address2</label>
+                                        <input id="paAddress2" asp-for="PhysicalAddress.Address2" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="d-flex">
+                                    <div class="form-group">
+                                        <label asp-for="PhysicalAddress.City">City</label>
+                                        <input id="paCity" asp-for="PhysicalAddress.City" class="form-control" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="PhysicalAddress.State">State</label>
+                                        <input id="paState" asp-for="PhysicalAddress.State" class="form-control" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="PhysicalAddress.Country">Country</label>
+                                        <input id="paCountry" asp-for="PhysicalAddress.Country" class="form-control" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="PhysicalAddress.ZipCode">Zip Code</label>
+                                        <input id="paZipCode" asp-for="PhysicalAddress.ZipCode" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h5 class="modal-title"><b>Billing Address - </b></h5>
+                            <br />
+                            <div class="form-group">
+                                <label asp-for="BillingAddress.SameAsPhysicalAddress">Same As Physical Address</label>
+                                <input id="baSameasPa" asp-for="BillingAddress.SameAsPhysicalAddress" type="checkbox" />
+                            </div>
+                            <div>
+                                <div class="d-flex">
+                                    <div class="form-group">
+                                        <label asp-for="BillingAddress.Address1">Address1</label>
+                                        <input id="baAddress1" asp-for="BillingAddress.Address1" class="form-control" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="BillingAddress.Address2">Address2</label>
+                                        <input id="baAddress2" asp-for="BillingAddress.Address2" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="d-flex">
+                                    <div class="form-group">
+                                        <label asp-for="BillingAddress.City">City</label>
+                                        <input id="baCity" asp-for="BillingAddress.City" class="form-control" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="BillingAddress.State">State</label>
+                                        <input id="baState" asp-for="BillingAddress.State" class="form-control" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="BillingAddress.Country">Country</label>
+                                        <input id="baCountry" asp-for="BillingAddress.Country" class="form-control" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label asp-for="BillingAddress.ZipCode">Zip Code</label>
+                                        <input id="baZipCode" asp-for="BillingAddress.ZipCode" class="form-control" />
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <h5 class="modal-title"><b>Practice Office Hours</b></h5>
+                            <div>
+                                <div class="form-group">
+                                    <label asp-for="PracticeOfficeHours.Monday">Monday</label>
+                                    <input id="Monday" asp-for="PracticeOfficeHours.Monday" type="checkbox" />
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="PracticeOfficeHours.Tuesday">Tuesday</label>
+                                    <input id="Tuesday" asp-for="PracticeOfficeHours.Tuesday" type="checkbox" />
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="PracticeOfficeHours.Wednesday">Wednesday</label>
+                                    <input id="Wednesday" asp-for="PracticeOfficeHours.Wednesday" type="checkbox" />
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="PracticeOfficeHours.Thursday">Thursday</label>
+                                    <input id="Thursday" asp-for="PracticeOfficeHours.Thursday" type="checkbox" />
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="PracticeOfficeHours.Friday">Friday</label>
+                                    <input id="Friday" asp-for="PracticeOfficeHours.Friday" type="checkbox" />
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="PracticeOfficeHours.Saturday">Saturday</label>
+                                    <input id="Saturday" asp-for="PracticeOfficeHours.Saturday" type="checkbox" />
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="PracticeOfficeHours.Sunday">Sunday</label>
+                                    <input id="Sunday" asp-for="PracticeOfficeHours.Sunday" type="checkbox" />
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <div class="form-group">
+                                    <input type="submit" value="Save" class="btn btn-primary" id="saveRecordButton" />
+                                    <input type="button" value="Cancel" class="btn btn-secondary" data-bs-dismiss="modal" />
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }
