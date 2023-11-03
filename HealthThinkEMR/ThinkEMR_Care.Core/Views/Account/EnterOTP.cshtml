@@ -1,0 +1,183 @@
+﻿@model ThinkEMR_Care.Core.Models.UserOTP
+@{
+    ViewData["Title"] = "EnterOTP";
+    Layout = "~/Views/Shared/_Layout_Login.cshtml";
+}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .container {
+            display: flex;
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            grid-template-columns: 1fr 1fr; /* Two equal columns */
+        }
+
+        .left-side {
+            flex: 1;
+            padding: 20px;
+            align-items: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        .right-side {
+            flex: 1;
+        }
+
+        .otp-input {
+            display: flex;
+            justify-content: space-between; /* Add equal space between OTP input fields */
+        }
+
+        .otp-digit {
+            width: 40px; /* Adjust the width as needed */
+            height: 40px; /* Adjust the height as needed */
+            text-align: center;
+            margin-right:25px;
+            border: 1px solid #ccc; /* Add a border */
+            border-radius: 5px; /* Add rounded corners */
+            font-size: 18px; /* Adjust the font size as needed */
+        }
+
+
+    </style>
+</head>
+
+<body>
+    <div class="row d-flex">
+        <div class="left-side">
+            <h1 style="color:dodgerblue">ThinkEMR</h1>
+            <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+                <form  asp-controller="Account" asp-action="EnterOTP" method="post">
+                    <div class="form-group">
+                        <label class="control-label" style="color: dodgerblue; font-weight: bold; width: 400px">Enter OTP</label><br />
+                        <p>We have sent an OTP to your email.</p>
+                        <div class="otp-input">
+                            <input asp-for="InputOTP" class="otp-digit" maxlength="1" pattern="\d" id="otp1">
+                            <input asp-for="InputOTP" class="otp-digit" maxlength="1" pattern="\d" id="otp2">
+                            <input asp-for="InputOTP" class="otp-digit" maxlength="1" pattern="\d" id="otp3">
+                            <input asp-for="InputOTP" class="otp-digit" maxlength="1" pattern="\d" id="otp4">
+                            <input asp-for="InputOTP" class="otp-digit" maxlength="1" pattern="\d" id="otp5">
+                            <input asp-for="InputOTP" class="otp-digit" maxlength="1" pattern="\d" id="otp6">
+                            <span class="text-danger">@TempData["errormessage"]</span>
+                        </div>
+                    </div>
+                    <br />
+                    <div style="text-align: center;">
+                        <div class="form-group">
+                            <button type="button" class="btn btn-primary btn-block" style="width: 400px;" id="submitOTP">Next</button><br /><br />
+                            <button type="button" class="btn btn-primary" style="width: 400px;" id="resendOTPButton">Resend OTP</button>
+                            <div style="width: 400px; margin: 0 auto;">
+                                <span class="text-danger" id="error-message">@TempData["errormessage"]</span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+        <div class="right-side">
+            <div>
+                <img src="~/EnterOTP.jpg">
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+<script>
+    document.getElementById("submitOTP").addEventListener("click", function () {
+        var otpDigits = [];
+        for (var i = 1; i <= 6; i++) {
+            var otpDigit = document.getElementById("otp" + i);
+            otpDigits.push(otpDigit.value);
+        }
+        var otpString = otpDigits.join('');
+
+        $.ajax({
+            type: 'POST',
+            url: '/Account/EnterOTP',
+            data: JSON.stringify({ inputOTP: otpString }),
+            contentType: 'application/json',
+            dataType: 'json',
+            success: function (response) {
+                if (response.redirectTo === 'ResetPassword') {
+                    window.location.href = '/Account/ResetPassword';
+                } else if (response.redirectTo === 'Login') {
+                    window.location.href = '/Account/Login';
+                }
+            },
+            error: function () {
+            }
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        // Resend OTP
+        $("#resendOTPButton").click(function () {
+            $.ajax({
+                url: '/Account/ResendOTP',
+                method: 'POST',
+                data: {},
+                success: function (response) {
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error: " + error);
+                }
+            });
+        });
+    });
+</script>
+
+
+@*<script>
+    document.getElementById("submitOTP").addEventListener("click", function () {
+        var otpDigits = [];
+        for (var i = 1; i <= 6; i++) {
+            var otpDigit = document.getElementById("otp" + i);
+            otpDigits.push(otpDigit.value);
+        }
+        var otpString = otpDigits.join('');
+
+        $.ajax({
+            type: 'POST',
+            url: '/Account/EnterOTP',
+            data: JSON.stringify({ inputOTP: otpString }),
+            contentType: 'application/json',
+            dataType: 'json',
+            success: function (response) {
+                if (response.redirectTo === 'ResetPassword') {
+                    window.location.href = '/Account/ResetPassword';
+                } else if (response.redirectTo === 'Login') {
+                    window.location.href = '/Account/Login';
+                } else if (response.redirectTo === 'Error') {
+                    var errorMessageElement = document.getElementById('error-message');
+                    errorMessageElement.innerHTML = "OTP did not match.";
+                } else if (response.redirectTo === 'OTPError') {
+                    var errorMessageElement = document.getElementById('error-message');
+                    errorMessageElement.innerHTML = "Please Enter Valid OTP Man..!!";
+                }
+            },
+            error: function () {
+            }
+        });
+    });
+</script>*@
+
+
+
+
+
+
+
+
+

@@ -5,13 +5,16 @@
 }
 <style>
     .card {
-        border: 1px solid #e0e0e0;
-        border-radius: 5px;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        padding: 10px;
-        text-align: center;
-        height: 100%; /* Set a fixed height for all cards */
-        background-color: aliceblue;
+        top: 5px;
+        left: 5px;
+        width: 240px;
+        height: 134px;
+        /* UI Properties */
+        background: var(--unnamed-color-ffffff) 0% 0% no-repeat padding-box;
+        background: #FFFFFF 0% 0% no-repeat padding-box;
+        box-shadow: 0px 0px 6px #00000029;
+        border-radius: 10px;
+        opacity: 1;
     }
 
     .card-title {
@@ -22,6 +25,19 @@
     .card-text {
         font-size: 1.5rem;
         color: #007bff;
+    }
+
+    .date-range-button {
+        top: 111px;
+        left: 1705px;
+        width: 179px;
+        height: 42px;
+        /* UI Properties */
+        background: var(--unnamed-color-ffffff) 0% 0% no-repeat padding-box;
+        background: #FFFFFF 0% 0% no-repeat padding-box;
+        box-shadow: 0px 0px 8px #00000029;
+        border-radius: 5px;
+        opacity: 1;
     }
 
 
@@ -106,7 +122,7 @@
 </div>
 <div>
     <div class="float-end">
-        <button id="dateRangeFilterBtn" class="btn btn-primary"><i class="bi bi-calendar4-event"></i>Date Range</button>
+        <button id="dateRangeFilterBtn" class="btn  date-range-button"><i class="bi bi-calendar4-event"></i>Date Range</button>
         <div id="dateRangePopup" class="popup">
             <h1>Calander Range</h1>
             <input type="radio" id="thisMonthRadio" name="dateRange" value="thisMonth">
@@ -130,7 +146,7 @@
                     <div class="card-body">
                         <div class="d-flex align-items-center">
                             <div style="text-align: left;">
-                                <img src="~/ProviderGroup.jpg" alt="Provider Group" style="border-radius: 50%; width: 100px; height: 100px;">
+                                <img src="~/ProviderGroups.jpg" alt="Provider Group" style="border-radius: 50%; width: 100px; height: 100px;">
                             </div>
                             <div style="text-align: right;">
                                 <p class="card-text" style="margin:0;">255</p>
@@ -145,7 +161,7 @@
                     <div class="card-body">
                         <div class="d-flex align-items-center">
                             <div style="text-align: left;">
-                                <img src="~/Provider.jpg" alt="Provider Group" style="border-radius: 50%; width: 100px; height: 100px;">
+                                <img src="~/ProvidersUp.jpg" alt="Provider Group" style="border-radius: 50%; width: 100px; height: 100px;">
                             </div>
                             <div style="text-align: center;">
                                 <p class="card-text" style="margin:0;">285</p>
@@ -160,7 +176,7 @@
                     <div class="card-body">
                         <div class="d-flex align-items-center">
                             <div style="text-align: left;">
-                                <img src="~/Patients.jpg" alt="Provider Group" style="border-radius: 50%; width: 100px; height: 100px;">
+                                <img src="~/Paitent.jpg" alt="Provider Group" style="border-radius: 50%; width: 100px; height: 100px;">
                             </div>
                             <div style="text-align: right;">
                                 <p class="card-text" style="margin:0;" >250</p>
@@ -175,11 +191,11 @@
                     <div class="card-body">
                         <div class="d-flex align-items-center">
                             <div style="text-align: left;">
-                                <img src="~/Appo.jpg" alt="Provider Group" style="border-radius: 50%; width: 100px; height: 100px;">
+                                <img src="~/Appointments.jpg" alt="Provider Group" style="border-radius: 50%; width: 100px; height: 100px;">
                             </div>
                             <div style="text-align: right;">
                                 <p class="card-text" style="margin:0">285</p>
-                                <h5 class="card-title" style="margin:0;">Provider</h5>
+                                <h5 class="card-title" style="margin:0;">Appointments</h5>
                             </div>
                         </div>
                     </div>
@@ -190,11 +206,11 @@
                     <div class="card-body">
                         <div class="d-flex align-items-center">
                             <div style="text-align: left;">
-                                <img src="~/Encounters.jpg" alt="Provider Group" style="border-radius: 50%; width: 100px; height: 100px;">
+                                <img src="~/EncounterUp.jpg" alt="Provider Group" style="border-radius: 50%; width: 100px; height: 100px;">
                             </div>
                             <div style="text-align: right;">
                                 <p class="card-text" style="margin:0">285</p>
-                                <h5 class="card-title" style="margin:0">Provider</h5>
+                                <h5 class="card-title" style="margin:0">Encounters</h5>
                             </div>
                         </div>
                     </div>
