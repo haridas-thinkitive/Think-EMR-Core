@@ -9,7 +9,7 @@ namespace ThinkEMR_Care.Core.Models
         public int Id { get; set; }
         public byte[]? AddLocationLogo { get; set; }
         public string LocationName { get; set; }
-        public int? LocationId { get; set; }
+        public string LocationId { get; set; }
         public string SpecialityType { get; set; }
         public string ContactNumber { get; set; }
         public string EmailId { get; set; }

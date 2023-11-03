@@ -1,6 +1,6 @@
-﻿@model ThinkEMR_Care.Core.Models.ProviderGroupProfile
+﻿@model ThinkEMR_Care.Core.Models.Locations
 
-@using (Html.BeginForm("Create", "ProviderGroups", FormMethod.Post))
+@using (Html.BeginForm("Create", "Locations", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
 
@@ -9,48 +9,48 @@
         <div class="modal-dialog modal-dialog-centered modal-lg" role="form">
             <div class="modal-content">
                 <div class="modal-header" style="text-align: center;">
-                    <h5 class="modal-title" style="text-align: center;"><b>Add New Provider Group</b></h5>
+                    <h5 class="modal-title" style="text-align: center;"><b>Add New Location</b></h5>
                 </div>
                 <div class="modal-body">
                     <div>
                         <div class="form-group">
-                            <label asp-for="ProviderGroupName">Provider Group Name</label>
-                            <input id="ProviderGroupName" asp-for="ProviderGroupName" class="form-control" />
+                            <label asp-for="LocationName">Loction Name</label>
+                            <input asp-for="LocationName" class="form-control" />
                         </div>
+                        
+                        <div class="d-flex">
+                            <div class="form-group">
+                                <label asp-for="LocationId">Location ID</label>
+                                <input asp-for="LocationId" class="form-control" />
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="SpecialityType">Speciality Type</label>
+                                <input asp-for="SpecialityType" class="form-control" />
+                            </div>
+                        </div>
+
                         <div class="d-flex">
                             <div class="form-group">
                                 <label asp-for="ContactNumber">Contact Number</label>
-                                <input id="ContactNumber" asp-for="ContactNumber" class="form-control" />
+                                <input asp-for="ContactNumber" class="form-control" />
                             </div>
-                            <div class="form-group">
-                                <label asp-for="GroupNPINumber">Group NPI Number</label>
-                                <input asp-for="GroupNPINumber" class="form-control" />
-                            </div>
-                        </div>
-                        <div class="d-flex">
-                            <div class="form-group">
-                                <label asp-for="SpecialityTypes">Speciality Type</label>
-                                <input asp-for="SpecialityTypes" class="form-control" />
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="Website">Website</label>
-                                <input asp-for="Website" class="form-control" />
-                            </div>
-                        </div>
-                        <div class="d-flex">
                             <div class="form-group">
                                 <label asp-for="EmailId">Email ID</label>
                                 <input asp-for="EmailId" class="form-control" />
                             </div>
+                        </div>
+
+                        <div class="d-flex">
                             <div class="form-group">
                                 <label asp-for="FaxId">Fax ID</label>
                                 <input asp-for="FaxId" class="form-control" />
                             </div>
+                            <div class="form-group">
+                                <label asp-for="Information">Information</label>
+                                <input asp-for="Information" class="form-control" />
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label asp-for="Information">Information</label>
-                            <input asp-for="Information" class="form-control" />
-                        </div>
+                        
                     </div>
                     <h5 class="modal-title"><b>Physical Address - </b></h5><br />
                     <div>

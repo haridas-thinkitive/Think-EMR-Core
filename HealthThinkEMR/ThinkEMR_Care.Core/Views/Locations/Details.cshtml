@@ -1,0 +1,278 @@
+﻿@model ThinkEMR_Care.Core.Models.Locations
+@{
+    ViewData["Title"] = "Details";
+}
+<style>
+    #offcanvasRight {
+        width: 75%;
+        overflow-y: auto; /* Enable vertical scrolling within the offcanvas */
+    }
+</style>
+<style>
+    .details {
+        border: 2px solid #ccc;
+        width: 300px;
+        height: 300px;
+    }
+
+    .info {
+        border: 2px solid #ccc;
+        width: 820px;
+        height: 300px;
+    }
+
+    .img {
+        border-radius: 30%;
+    }
+
+    .body {
+        text-align: left;
+        margin: 10px;
+    }
+
+    .bi-arrow-left {
+        font-size: 24px; /* Adjust the size as needed */
+        font-weight: bold;
+    }
+
+    .card.practice .body {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .card.billing .body {
+        display: flex;
+        justify-content: space-between;
+    }
+
+
+    .card.practice .table-container {
+        flex-basis: 48%;
+    }
+
+    .card.billing .table-container {
+        flex-basis: 48%;
+    }
+
+    .card.info .body {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .card.info .table-container {
+        flex-basis: 48%;
+    }
+
+</style>
+
+@using (Html.BeginForm("Details/{id}", "Locations", FormMethod.Get))
+{
+@Html.AntiForgeryToken()
+    <div id="detailslocation">
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+            <form asp-action="Get">
+                <div class="offcanvas-content">
+                    <div class="offcanvas-header">
+                        <h5 id="offcanvasRightLabel">
+                            <button type="button" class="btn btn-link" data-bs-dismiss="offcanvas" aria-label="Close">
+                                <i class="bi bi-arrow-left"></i>
+                            </button>Details
+                        </h5>
+                    </div>
+
+                    <div class="offcanvas-body">
+                        <div>
+                            <div style="float: left;">
+                                <button class="btn btn-primary">Details</button>
+                                <button class="btn btn-primary" onclick="location.href='@Url.Action("Index", "Departments")'">Departments</button>
+                                <button class="btn btn-primary">Patients</button>
+                                <button class="btn btn-primary">Users</button>
+                            </div>
+
+                            <div style="float: right;">
+                                @*<button class="btn btn-primary" data-bs-toggle="modal" id="editButton" onclick="Edit('@item.Id')">Edit Profile</button>*@
+                            </div>
+                            <div style="clear: both;"></div> 
+                        </div>
+                        <br />
+                        <div>
+                            <h4>Location Details</h4>
+                        </div>
+                        <div class="d-flex">
+                            <div class="card details">
+                                <div>
+                                    <div>
+                                        <img src="~/hospital-windows.jpg" alt="Profile Image" class="img-thumbnail img" />
+                                    </div>
+                                </div>
+                                <div class="body">
+                                    <table>
+                                        <tr>
+                                            <th>Location Id </th>
+                                            <th>:</th>
+                                            <td id="detailsLocationId"> @Model.LocationId</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Location Name  </th>
+                                            <th>:</th>
+                                            <td id="detailsLocationName"> @Model.LocationName</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Work Phone </th>
+                                            <th>:</th>
+                                            <td id="detailsContactNumber"> @Model.ContactNumber</td>
+                                        </tr>
+
+                                    </table>
+                                </div>
+                            </div>
+                            &nbsp;
+                            <div class="card info">
+                                <div>
+                                    <header style="color:deepskyblue"><b>Information</b></header>
+                                </div>
+                                <div class="body">
+                                    <div class="table-container">
+                                        <table>
+                                            <tr>
+                                                <th>Email Id </th>
+                                                <th>:</th>
+                                                <td id="detailsEmailId">@Model.EmailId</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Speciality </th>
+                                                <th>:</th>
+                                                <td id="detailsSpecialityTypes">@Model.SpecialityType</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Fax No </th>
+                                                <th>:</th>
+                                                <td id="detailsFaxId">@Model.FaxId</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Group NPI Number </th>
+                                                <th>:</th>
+                                                <td id="detailsGroupNPI"> MH14DY0311</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="table-container">
+                                        <table>
+                                            <tr>
+                                                <th>Office Hours :</th>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <br />Monday : 10:00 AM to 8:00 PM
+                                                    <br />Tuesday : 10:00 AM to 8:00 PM
+                                                    <br />Wednesday : 10:00 AM to 8:00 PM
+                                                    <br />Thursday : 10:00 AM to 8:00 PM
+                                                    <br />Friday : 10:00 AM to 8:00 PM
+                                                    <br />Saturday : 10:00 AM to 8:00 PM
+                                                    <br />Sunday : 10:00 AM to 8:00 PM
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="card practice">
+                            <div>
+                                <header style="color:deepskyblue"><b>Practice Address</b></header>
+                            </div>
+                            <div class="body">
+                                <div class="table-container">
+                                    <table>
+                                        <tr>
+                                            <th>Address Line 1 </th>
+                                            <th>:</th>
+                                            <td id="detailsPaAddress1">@(Model.PhysicalAddress != null ? Model.PhysicalAddress.Address1 : " ")</td>
+                                        </tr>
+
+                                        <tr>
+                                            <th>Address Line 2 </th>
+                                            <th>:</th>
+                                            <td id="detailsPaAddress2"> @(Model.PhysicalAddress != null ? Model.PhysicalAddress.Address2 : " ")</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Country </th>
+                                            <th>:</th>
+                                            <td id="detailsPaCountry">@(Model.PhysicalAddress != null ? Model.PhysicalAddress.Country : " ")</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="table-container">
+                                    <table>
+                                        <tr>
+                                            <th>State </th>
+                                            <th>:</th>
+                                            <td id="detailsPaState"> @(Model.PhysicalAddress != null ? Model.PhysicalAddress.State : " ")</td>
+                                        </tr>
+                                        <tr>
+                                            <th>City </th>
+                                            <th>:</th>
+                                            <td id="detailsPaCity"> @(Model.PhysicalAddress != null ? Model.PhysicalAddress.City : " ")</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Zip Code </th>
+                                            <th>:</th>
+                                            <td id="detailsPaZipCode"> @(Model.PhysicalAddress != null ? Model.PhysicalAddress.ZipCode : " ")</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="card billing">
+                            <div>
+                                <header style="color:deepskyblue"><b>Pay to (Billing) Address</b></header>
+                            </div>
+                            <div class="body">
+                                <div class="table-container">
+                                    <table>
+                                        <tr>
+                                            <th>Address Line 1 </th>
+                                            <th>:</th>
+                                            <td id="detailsBaAddress1">@(Model.BillingAddress != null ? Model.BillingAddress.Address1 : " ")</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Address Line 2 </th>
+                                            <th>:</th>
+                                            <td id="detailsBaAddress2"> @(Model.BillingAddress != null ? Model.BillingAddress.Address2 : " ")</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Country </th>
+                                            <th>:</th>
+                                            <td id="detailsBaCountry"> @(Model.BillingAddress != null ? Model.BillingAddress.Country : " ")</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="table-container">
+                                    <table>
+                                        <tr>
+                                            <th>State </th>
+                                            <th>:</th>
+                                            <td id="detailsBaState">@(Model.BillingAddress != null ? Model.BillingAddress.State : " ")</td>
+                                        </tr>
+                                        <tr>
+                                            <th>City </th>
+                                            <th>:</th>
+                                            <td id="detailsBaCity">@(Model.BillingAddress != null ? Model.BillingAddress.City : " ")</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Zip Code </th>
+                                            <th>:</th>
+                                            <td id="detailsBaZipCode">@(Model.BillingAddress != null ? Model.BillingAddress.ZipCode : " ")</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+}
