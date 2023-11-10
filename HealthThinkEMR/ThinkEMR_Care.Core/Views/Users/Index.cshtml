@@ -1,0 +1,163 @@
+﻿@model IEnumerable<ThinkEMR_Care.Core.Models.StaffUser>
+@{
+    ViewData["Title"] = "StaffUser";
+}
+
+<style>
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .dropbtn:hover, .dropbtn:focus {
+        background-color: #2980B9;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f1f1f1;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+    }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+            .dropdown-content a:hover {
+                background-color: #ddd;
+            }
+
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+</style>
+
+<div id="partialZone"></div>
+
+<br/>
+@*<div>
+    <h4 style="float: left;"><b>User</b></h4>
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="float: right;">Add User</button>
+</div>*@
+<div>
+    <h4 style="float: left;"><b>User</b></h4>
+  
+    <div class="dropdown" style="float: right;">
+        <button class="btn btn-primary dropbtn">Add User</button>
+        <div id="myDropdown" class="dropdown-content">
+            <a data-bs-toggle="modal" data-bs-target="#staticBackdrop" >Staff User</a>
+            <a href="#">Provider User</a>
+        </div>
+    </div>
+</div>
+
+<br />
+<br />
+<div>
+    <table class="table table-hover">
+        <thead class="table-active">
+            <tr>
+                <th>User Id</th>
+                <th>User Name</th>
+                <th>Role</th>
+                <th>Email Id</th>
+                <th>Contact Number</th>
+                <th>Last Login</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @item.Id
+                    </td>
+                    <td>
+                        @item.FirstName @item.LastName
+                    </td>
+                    <td>
+                        @item.Role
+                    </td>
+                    <td>
+                        @item.Email
+                    </td>
+                    <td>
+                        @item.ContactNumber
+                    </td>
+                    <td>
+                        @item.LastLogin
+                    </td>
+                    <td>
+                        <div class="form-check form-switch">
+                            <input id="statusCheckbox" class="form-check-input" type="checkbox">
+                        </div>
+                    </td>
+                    <td>
+                        <i class="bi bi-pencil" data-bs-toggle="modal" id="editButton" onclick="Edit('@item.Id')"></i>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div id="addStaffUser">
+</div>
+<div id="editStaffUser">
+</div>
+
+
+@section Scripts{
+    <script>
+        $('#partialZone').load("/Profile/ProfilePartial")
+    </script>
+
+    <script>
+        $('#addStaffUser').load("/Users/CreatePartial")
+    </script>
+    
+    <script>
+        $('#editStaffUser').load("/Users/DetailsPartial")
+    </script>
+    
+    <script>
+        function Edit(id) {
+            $.ajax({
+                url: '/Users/Edit/' + id,
+                type: "Get",
+                contentType: 'application/json;charset=utf-8',
+                dataType: 'json', // Use 'dataType' instead of 'datatype'
+                success: function (data) {
+                    
+                    $('#staticEditBackdrop').modal('show');
+                    $('#staticEditBackdrop').on('shown.bs.modal', function () {
+                        debugger;
+                        $('#editId').val(data.id);
+                        $('#editLastName').val(data.lastName);
+                        $('#editFirstName').val(data.firstName);
+                        $('#editEmail').val(data.email);
+                        $('#editContactNumber').val(data.contactNumber);
+                        $('#editRole').val(data.role);
+
+                        if (data.status) {
+                            $("#Status").attr('checked', 'checked')
+                        }
+                    })
+                },
+                error: function () {
+                    alert('Failed to retrieve departments data.');
+                }
+            });
+        }
+        function closeModal() {
+            $('#staticEditBackdrop').modal('hide');
+        }
+    </script>
+}
