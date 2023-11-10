@@ -42,7 +42,6 @@
             {
                 <tr class="text-center" data-asset-id="@item.Id" data-asset-speciality="@item.DepartmentId" data-asset-type="@item.DepartmentName" data-asset-type="@item.DepartmentAdmin" data-asset-type="@item.ContactNumber" >
                     <td>
-                        @*@Html.DisplayFor(modelItem => item.DepartmentId)*@
                         @item.DepartmentId
                     </td>
                     <td>
@@ -63,7 +62,6 @@
                         </div>
                     </td>
                     <td>
-                        @*<i class="bi bi-pencil"   data-bs-target="#staticEditBackdrop" ></i>  *@
                         <i class="bi bi-pencil" data-bs-toggle="modal"  id="editButton" onclick="Edit('@item.Id')"></i>
                     </td>
                 </tr>
