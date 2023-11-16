@@ -162,10 +162,12 @@ namespace ThinkEMR_Care.Core.Controllers
                             {
                                 if (apiResponse.Otp == userOTP.InputOTP)
                                 {
+                                    HttpContext.Session.Remove("ApiResponse");
                                     return Json(new { redirectTo = "ResetPassword" });
                                 }
                                 else
                                 {
+                                    HttpContext.Session.Remove("ApiResponse");
                                     TempData["errormessage"] = "OTP did not match.";
                                     return Json(new { redirectTo = "Error" });
                                 }
@@ -178,10 +180,12 @@ namespace ThinkEMR_Care.Core.Controllers
                             {
                                 if (apiResponseExistSession.Otp == userOTP.InputOTP)
                                 {
+                                    HttpContext.Session.Remove("ResendOTP");
                                     return Json(new { redirectTo = "ResetPassword" });
                                 }
                                 else
                                 {
+                                    HttpContext.Session.Remove("ResendOTP");
                                     TempData["errormessage"] = "OTP did not match.";
                                     return Json(new { redirectTo = "Error" });
                                 }
@@ -212,10 +216,12 @@ namespace ThinkEMR_Care.Core.Controllers
             {
                 if (resetPassword.Password != null && resetPassword.ConfirmPassword != null && resetPassword.Password == resetPassword.ConfirmPassword)
                 {
-                    string apiResponseJson = HttpContext.Session.GetString("ApiResponse");
-                    if (!string.IsNullOrEmpty(apiResponseJson))
+                    string ExistingSessionOTP = HttpContext.Session.GetString("ApiResponse");
+                    string ResendSessionOTP = HttpContext.Session.GetString("ResendOTP");
+
+                    if (!string.IsNullOrEmpty(ExistingSessionOTP))
                     {
-                        ResetPasswordData apiResponse = JsonConvert.DeserializeObject<ResetPasswordData>(apiResponseJson);
+                        ResetPasswordData apiResponse = JsonConvert.DeserializeObject<ResetPasswordData>(ExistingSessionOTP);
                         if (apiResponse != null)
                         {
                             var RequestBody = new ResetPasswordData
@@ -234,6 +240,43 @@ namespace ThinkEMR_Care.Core.Controllers
                                 {
                                     if (response.IsSuccessStatusCode)
                                     {
+                                        HttpContext.Session.Remove("ApiResponse");
+                                        TempData["Success"] = "Password Updated Successfully";
+                                        return RedirectToAction("Login", "Account");
+                                    }
+                                    else
+                                    {
+                                        TempData["errormessage"] = "Something went wrong with the API request.";
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            TempData["errormessage"] = "Invalid API response data";
+                        }
+                    } else if(!string.IsNullOrEmpty(ResendSessionOTP))
+                    {
+                        ResetPasswordData apiResponse = JsonConvert.DeserializeObject<ResetPasswordData>(ResendSessionOTP);
+                        if (apiResponse != null)
+                        {
+                            var RequestBody = new ResetPasswordData
+                            {
+                                Password = resetPassword.Password,
+                                ConfirmPassword = resetPassword.ConfirmPassword,
+                                Email = apiResponse.Email,
+                                Token = apiResponse.Token,
+                                OTP = apiResponse.OTP,
+                            };
+
+                            using (var httpClient = new HttpClient())
+                            {
+                                StringContent stringContent = new StringContent(JsonConvert.SerializeObject(RequestBody), Encoding.UTF8, "application/json");
+                                using (var response = await httpClient.PostAsync("https://localhost:7286/api/AuthenticationService/Reset-Password", stringContent))
+                                {
+                                    if (response.IsSuccessStatusCode)
+                                    {
+                                        HttpContext.Session.Remove("ResendOTP");
                                         TempData["Success"] = "Password Updated Successfully";
                                         return RedirectToAction("Login", "Account");
                                     }
@@ -315,5 +358,6 @@ namespace ThinkEMR_Care.Core.Controllers
                 throw ex;
             }
         }
+
     }
 }
