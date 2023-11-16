@@ -1,0 +1,227 @@
+﻿@model IEnumerable<ThinkEMR_Care.Core.Models.AdminProfileDetails>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <style>
+        .card-grid {
+            * Layout Properties */ top: 184px;
+            left: 200px;
+            width: 300px;
+            height: 248px;
+            /* UI Properties */
+            background: transparent url('img/Rectangle 8674.png') 0% 0% no-repeat padding-box;
+            box-shadow: 0px 0px 8px #00000029;
+            border-radius: 5px;
+            opacity: 1;
+        }
+        .card {
+          
+        }
+
+        .card-content {
+            display: flex;
+        }
+    </style>
+</head>
+<body>
+    <div class="row">
+        <div class="col">
+            <button type="button" class="btn btn-primary float-end" data-toggle="modal" data-target="#exampleModal">
+                Add New User
+            </button>
+        </div>
+    </div>
+    <div class="card-grid">
+        @foreach (var adminProfile in Model)
+        {
+            bool hasProfileImage = !string.IsNullOrEmpty(adminProfile.ProfileImage);
+
+            <div class="card mb-3">
+                <div class="row no-gutters">
+                    <div class="col-md-4">
+                        @if (hasProfileImage)
+                        {
+                            byte[] imageData = Convert.FromBase64String(adminProfile.ProfileImage);
+                            string imageBase64 = Convert.ToBase64String(imageData);
+                            string dataUrl = $"data:image/jpeg;base64,{imageBase64}";
+                            <img src="@dataUrl" alt="Profile Image" class="card-img img-fluid rounded-circle">
+                        }
+                        else
+                        {
+                            <img src="~/ProviderGroups.jpg" alt="Default Image" class="card-img img-fluid rounded-circle">
+                        }
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">@adminProfile.FirstName @adminProfile.LastName</h5>
+                            <p class="card-text"><strong>Role:</strong> @adminProfile.Role</p>
+                            <p class="card-text"><strong>Email:</strong> @adminProfile.Email</p>
+                            <p class="card-text"><strong>Phone Number:</strong> @adminProfile.PhoneNumber</p>
+                            <p class="card-text">
+                                <strong>Last Login:</strong>
+                                @(adminProfile.LastLogin != null ? adminProfile.LastLogin.Value.ToString("dd MMM yyyy hh:mm tt") : "N/A")
+                            </p>
+                            <p class="card-text"><strong>Status:</strong> @(adminProfile.Status ? "Active" : "Inactive")</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <h5 class="modal-title" id="exampleModalLabel">Add New User</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="post">
+                        <div class="row">
+                            <div class="form-group col-md-4">
+                                <label for="profilePhoto" style="font-weight: bold;">Profile Photo</label>
+                                <div class="input-group">
+                                    <img src="~/ProfileImg.jpg" alt="Profile Photo" class="img-fluid" id="previewImage" style="cursor: pointer;">
+                                    <input type="file" class="form-control-file" id="profilePhoto" accept="image/*" style="display: none;">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="firstName" style="font-weight: bold;">First Name</label>
+                                    <input type="text" class="form-control" placeholder="First Name" id="firstName" autocomplete="off">
+                                </div>
+                                <div class="form-group">
+                                    <label for="email" style="font-weight: bold;">Email</label>
+                                    <input type="text" class="form-control" placeholder="Email" id="email" autocomplete="off">
+                                </div>
+                                <div class="form-group">
+                                    <label for="contactNumber" style="font-weight: bold;">Contact Number</label>
+                                    <input type="tel" class="form-control" placeholder="Phone Number" id="contactNumber" autocomplete="off">
+                                </div>
+                                <div class="form-group">
+                                    <label for="userName" style="font-weight: bold;">User Name</label>
+                                    <input type="text" class="form-control" placeholder="User Name" id="userName" autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label for="lastName" style="font-weight: bold;">Last Name</label>
+                                    <input type="text" class="form-control" placeholder="Last Name" id="lastName" autocomplete="off">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="status" style="font-weight: bold;">Status</label>
+                                    <select class="form-control" id="status" name="status">
+                                        <option value="true">Active</option>
+                                        <option value="false">InActive</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="role" style="font-weight: bold;">Role</label>
+                                    <select class="form-control" id="role" name="role">
+                                        <option value="SuperAdmin">SuperAdmin</option>
+                                        <option value="Admin1">Admin1</option>
+                                    </select>
+                                </div>
+                                <div class="form-group password">
+                                    <label for="password" class="password-label" style="font-weight: bold;">Password</label>
+                                    <input type="password" class="form-control password-input" placeholder="password" id="password" autocomplete="off">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" onclick="CreateAdminProfile()" id="CreateAdminProfile">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
+
+<script>
+    $('#btnaddnewuser').click(function () {
+        $('#addnewuser').modal('show');
+    })
+
+    // Trigger file input click when the image is clicked
+    $('#previewImage').click(function () {
+        $('#profilePhoto').click();
+    });
+
+    // Display the selected image
+    $('#profilePhoto').change(function () {
+        var input = this;
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#previewImage').attr('src', e.target.result);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    });
+
+    function CreateAdminProfile() {
+        debugger;
+
+        var adminProfileDetails = {
+            firstName: $('#firstName').val(),
+            lastName: $('#lastName').val(),
+            role: $('#role').val(),
+            email: $('#email').val(),
+            contactNumber: $('#contactNumber').val(),
+            status: $('#status').val(),
+            userName: $('#userName').val(),
+            password: $('#password').val(),
+            // No need to include the file directly in the object
+        }
+
+        var formData = new FormData();
+        for (var key in adminProfileDetails) {
+            formData.append(key, adminProfileDetails[key]);
+        }
+
+        // Append the file to the FormData directly
+        formData.append('profilePhoto', $('#profilePhoto')[0].files[0]);
+
+        // Update the URL to use the correct protocol (HTTP or HTTPS)
+        var url = window.location.protocol + '//' + window.location.host + '/UserSetting/Create';
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function () {
+                console.log('Success:');
+            },
+            error: function (error) {
+                console.error('Error:');
+            }
+        });
+    }
+</script>
+
+
+
+
+
