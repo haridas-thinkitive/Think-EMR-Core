@@ -40,6 +40,7 @@ namespace ThinkEMR_Care.Core.Controllers
                             if (apiResponse.IsSuccess)
                             {
                                 HttpContext.Session.SetString("JWToken", apiResponse.Responce);
+                                HttpContext.Session.SetString("UserName", apiResponse.CurrentUserNmae);
                                 return RedirectToAction("Index", "AdminDashboard");
                             }
                             else
