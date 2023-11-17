@@ -79,11 +79,17 @@
             </li>
             <li>
                 <a asp-area="" asp-controller="UserSetting" asp-action="Index"><i class="bi bi-gear-fill"></i> Settings</a>
+                <ul>
+                    <li>
+                        <a asp-area="" asp-controller="UserSetting" asp-action="AdminProfile">Profile</a>
+                    </li>
+                    <li>
+                        <a asp-area="" asp-controller="UserSetting" asp-action="Index">User Settings </a>
+                    </li>
+                </ul>
             </li>
             <li>
-                <a asp-area="" asp-controller="AdminDashboard" asp-action="Logout" id="logoutButton">
-                    <i class="bi bi-box-arrow-right"></i> Logout
-                </a>
+                <a asp-area="" asp-controller="AdminDashboard" asp-action="Logout" id="logoutButton"><i class="bi bi-box-arrow-right"></i> Logout</a>
             </li>
         </ul>
     </div>

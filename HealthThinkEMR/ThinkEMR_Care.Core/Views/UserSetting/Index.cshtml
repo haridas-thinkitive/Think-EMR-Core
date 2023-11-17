@@ -23,10 +23,6 @@
             border-radius: 5px;
             opacity: 1;
         }
-        .card {
-          
-        }
-
         .card-content {
             display: flex;
         }
@@ -62,10 +58,10 @@
                     </div>
                     <div class="col-md-8">
                         <div class="card-body">
-                            <h5 class="card-title">@adminProfile.FirstName @adminProfile.LastName</h5>
-                            <p class="card-text"><strong>Role:</strong> @adminProfile.Role</p>
-                            <p class="card-text"><strong>Email:</strong> @adminProfile.Email</p>
-                            <p class="card-text"><strong>Phone Number:</strong> @adminProfile.PhoneNumber</p>
+                            <p class="card-text"><strong>Name: </strong>@adminProfile.FirstName</p>
+                            <p class="card-text"><strong>Role: </strong> @adminProfile.Role</p>
+                            <p class="card-text"><strong>Email: </strong> @adminProfile.Email</p>
+                            <p class="card-text"><strong>Phone Number: </strong> @adminProfile.PhoneNumber</p>
                             <p class="card-text">
                                 <strong>Last Login:</strong>
                                 @(adminProfile.LastLogin != null ? adminProfile.LastLogin.Value.ToString("dd MMM yyyy hh:mm tt") : "N/A")

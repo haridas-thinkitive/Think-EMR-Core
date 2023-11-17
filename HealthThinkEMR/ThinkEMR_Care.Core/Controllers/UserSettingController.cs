@@ -12,6 +12,7 @@ namespace ThinkEMR_Care.Core.Controllers
     {
 
         private string baseUrl = "https://localhost:7286/api/AuthenticationService/GetAllAdminProfiles";
+        private string baseUrl1 = "https://localhost:7286/api/AuthenticationService/GetAllAdminProfiles";
         private HttpClient client = new HttpClient();
         public IActionResult Index()
         {
@@ -185,8 +186,6 @@ namespace ThinkEMR_Care.Core.Controllers
                 return RedirectToAction("Login", "Account");
             }
         }
-
-
         private async Task<string> ConvertImageToBase64Async(IFormFile image)
         {
             using (var memoryStream = new MemoryStream())
@@ -196,10 +195,65 @@ namespace ThinkEMR_Care.Core.Controllers
             }
         }
 
+        //public async Task<IActionResult> AdminProfile()
+        //{
+        //    List<AdminProfileDetails> adminProfileDataList = new List<AdminProfileDetails>();
+        //    string jwtToken = HttpContext.Session.GetString("JWToken");
+        //    if (string.IsNullOrEmpty(jwtToken))
+        //    {
+        //        return RedirectToAction("Login", "Account");
+        //    }
+        //    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
+        //    HttpResponseMessage response = client.GetAsync(baseUrl1).Result;
+        //    if (response.IsSuccessStatusCode)
+        //    {
+        //        string result = response.Content.ReadAsStringAsync().Result;
+        //        var data = JsonConvert.DeserializeObject<List<AdminProfileDetails>>(result);
+        //        if (data != null)
+        //        {
+        //            adminProfileDataList = data;
+        //        }
+        //    }
+        //    return View(adminProfileDataList);
+        //}
 
 
+        public async Task<IActionResult> AdminProfile()
+        {
+            AdminProfileDetails adminProfileData = null;
+            string jwtToken = HttpContext.Session.GetString("JWToken");
+
+            // Retrieve the username from the session
+            string username = HttpContext.Session.GetString("UserName");
+
+            if (string.IsNullOrEmpty(jwtToken) || string.IsNullOrEmpty(username))
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
+            // Construct the URL with the specific format
+            string apiUrl = $"https://localhost:7286/api/AuthenticationService/GetLoggedInUserProfile?userName={Uri.EscapeDataString(username)}";
+
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
+            HttpResponseMessage response = await client.GetAsync(apiUrl);
+
+            if (response.IsSuccessStatusCode)
+            {
+                string result = await response.Content.ReadAsStringAsync();
+                adminProfileData = JsonConvert.DeserializeObject<AdminProfileDetails>(result);
+                return View(adminProfileData);
+            }
+
+            return View(adminProfileData);
+        }
 
 
+        [HttpPost]
+        public async Task<IActionResult> ChangeUserPassword([FromBody] ChangeUserPassword changeUserPassword)
+        {
+            
+            return View();
+        }
 
 
     }
