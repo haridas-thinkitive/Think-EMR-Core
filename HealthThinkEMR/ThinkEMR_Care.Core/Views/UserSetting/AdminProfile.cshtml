@@ -5,9 +5,7 @@
 }
 <html lang="en">
 <head>
-    <!-- Your custom styles can be added here -->
     <style>
-        /* Add any additional custom styles here */
         .custom-div {
             top: 91px;
             left: 264px;
@@ -41,9 +39,7 @@
             margin-top: 20px; /* Adjusted margin-top for spacing */
         }
 
-        /* Styles for the cards */
         .custom-card {
-            /* Center the card horizontally, move it slightly lower, and increase its size */
             position: absolute;
             top: 60%; /* Adjust the percentage to move it lower */
             left: 50%;
@@ -128,7 +124,7 @@
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header text-center">
-                    <h5 class="modal-title" id="exampleModalLabel">Add New User</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Change Password</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -139,34 +135,34 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label for="currentPassword" style="font-weight: bold;">Current Password</label>
-                                    <input type="text" class="form-control" placeholder="Current Password" id="currentPassword" autocomplete="off">
+                                    <input type="text" class="form-control" placeholder="Current Password" id="currentPassword" autocomplete="off" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="newPassword" style="font-weight: bold;">New Password</label>
-                                    <input type="text" class="form-control" placeholder="New Password" id="newPassword" autocomplete="off">
+                                    <input type="text" class="form-control" placeholder="New Password" id="newPassword" autocomplete="off" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="conformNewPassword" style="font-weight: bold;">Conform Password</label>
-                                    <input type="tel" class="form-control" placeholder="Conform Password" id="conformNewPassword" autocomplete="off">
+                                    <label for="conformNewPassword" style="font-weight: bold;">Confirm Password</label>
+                                    <input type="tel" class="form-control" placeholder="Confirm Password" id="conformNewPassword" autocomplete="off" required>
                                 </div>
                             </div>
                         </div>
                     </form>
+                    <div id="errorMessage" class="text-danger"></div> <!-- Added this line -->
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button id="closeModalButton" data-dismiss="modal" type="button" class="btn btn-secondary">Close</button>
                     <button type="button" class="btn btn-primary" onclick="UpdateUserPassword()" id="UpdateUserPassword">Save changes</button>
                 </div>
             </div>
         </div>
     </div>
 
-
-
     <!-- Bootstrap JS and other scripts can be added here -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
 </body>
 </html>
 
@@ -176,27 +172,48 @@
     });
 
     function UpdateUserPassword() {
+        $('#errorMessage').text('');
         var changeUserPassword = {
             currentPassword: $('#currentPassword').val(),
             newPassword: $('#newPassword').val(),
             conformNewPassword: $('#conformNewPassword').val(),
         };
-
-        // Update the URL to use the correct protocol (HTTP or HTTPS)
         var url = window.location.protocol + '//' + window.location.host + '/UserSetting/ChangeUserPassword';
-
         $.ajax({
             url: url,
             type: 'POST',
             data: JSON.stringify(changeUserPassword),
             contentType: 'application/json',
-            success: function () {
-                console.log('Success');
+            success: function (data) {
+                if (data.success) {
+                    //resetFormFields();
+                    //$('#closeModalButton').click();
+                    // Reset the form fields
+                    resetFormFields();
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: 'Password Change Successfully..!!', 
+                    }).then((result) => {
+                        if (result.dismiss === Swal.DismissReason.overlay || result.dismiss === Swal.DismissReason.esc) {
+                            $('#closeModalButton').click();
+                        }
+                    });
+                } else {
+                    $('#errorMessage').text(data.message);
+                    resetFormFields();
+                }
             },
             error: function (error) {
                 console.error('Error');
             }
         });
+    }
+
+    function resetFormFields() {
+        $('#currentPassword').val('');
+        $('#newPassword').val('');
+        $('#conformNewPassword').val('');
     }
 </script>
 
