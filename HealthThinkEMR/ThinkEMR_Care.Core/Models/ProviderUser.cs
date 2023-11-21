@@ -6,8 +6,8 @@ namespace ThinkEMR_Care.Core.Models
     {
         [Key]
         public int Id { get; set; }
-        public string ProviderId { get; set; }
-        public byte[]? Image { get; set; }
+        public string? ProviderId { get; set; }
+        public string? Image { get; set; }
         public string ProviderType { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -33,6 +33,7 @@ namespace ThinkEMR_Care.Core.Models
     }
     public class BasicAccountProfileData
     {
+        [Key]
         public int Id { get; set; }
         public string AreaOfFocus { get; set; }
         public string HospitalAffilation { get; set; }

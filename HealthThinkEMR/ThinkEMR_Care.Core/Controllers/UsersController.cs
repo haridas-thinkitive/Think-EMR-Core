@@ -176,5 +176,47 @@ namespace ThinkEMR_Care.Core.Controllers
         {
             return PartialView("Edit", staffUser);
         }
+
+        /// <summary>
+        /// Provider User
+        /// </summary>
+        /// <returns></returns>
+
+        
+
+        public async Task<ActionResult> AddProvider(ProviderUser model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var json = JsonConvert.SerializeObject(model);
+                    var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                    HttpResponseMessage response = await _client.PostAsync("AddProviderUsers", content);
+
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return RedirectToAction("Index");
+                    }
+                    else if (response.StatusCode == HttpStatusCode.BadRequest)
+                    {
+                        // Handle validation errors if necessary
+                        var validationErrors = await response.Content.ReadAsStringAsync();
+                        ModelState.AddModelError(string.Empty, $"API request failed with status code {response.StatusCode}. Validation errors: {validationErrors}");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, $"API request failed with status code {response.StatusCode}. Content: {await response.Content.ReadAsStringAsync()}");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ModelState.AddModelError(string.Empty, $"An error occurred: {ex.Message}");
+                }
+            }
+            return View(model);
+        }
+
     }
 }
