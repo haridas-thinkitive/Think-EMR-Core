@@ -12,7 +12,6 @@ namespace ThinkEMR_Care.Core.Controllers
     {
 
         private string baseUrl = "https://localhost:7286/api/AuthenticationService/GetAllAdminProfiles";
-        private string baseUrl1 = "https://localhost:7286/api/AuthenticationService/GetAllAdminProfiles";
         private HttpClient client = new HttpClient();
         public IActionResult Index()
         {
@@ -36,98 +35,6 @@ namespace ThinkEMR_Care.Core.Controllers
             return View(adminProfileDataList);
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> Create(AdminProfileDetails adminProfileDetails)
-        //{
-        //    try
-        //    {
-        //        if (ModelState.IsValid)
-        //        {
-        //            using (var httpClient = new HttpClient())
-        //            {
-        //                StringContent stringContent = new StringContent(JsonConvert.SerializeObject(adminProfileDetails), Encoding.UTF8, "application/json");
-        //                using (var response = await httpClient.PostAsync($"https://localhost:7286/api/AuthenticationService/Register?Role={adminProfileDetails.Role}", stringContent))
-        //                {
-        //                    if (response.IsSuccessStatusCode)
-        //                    {
-        //                        string responseContent = await response.Content.ReadAsStringAsync();
-        //                        var apiResponse = JsonConvert.DeserializeObject<ResponceContent>(responseContent);
-
-        //                        if (apiResponse.status == "Success")
-        //                        {
-        //                            return RedirectToAction("Index", "UserSetting");
-        //                        }
-        //                        else
-        //                        {
-        //                            return RedirectToAction("Login", "Account");
-
-        //                        }
-        //                    }
-        //                    return RedirectToAction("Index", "UserSetting");
-        //                }
-        //            }
-        //        }
-
-        //        return RedirectToAction("Login", "Account");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-        //}
-        //[HttpPost]
-        //public async Task<IActionResult> Create([FromForm] AdminProfileDetails adminProfileDetails, IFormFile profilePhoto)
-        //{
-        //    try
-        //    {
-        //        if (ModelState.IsValid)
-        //        {
-        //            using (var httpClient = new HttpClient())
-        //            {
-        //                var apiUrl = "https://localhost:7286/api/AuthenticationService/Register";
-        //                var queryString = $"?Role={adminProfileDetails.Role}";
-        //                var fullUrl = $"{apiUrl}{queryString}";
-
-        //                var adminProfileJson = JsonConvert.SerializeObject(adminProfileDetails, new JsonSerializerSettings
-        //                {
-        //                    ContractResolver = new DefaultContractResolver
-        //                    {
-        //                        NamingStrategy = new CamelCaseNamingStrategy()
-        //                    },
-        //                    Formatting = Formatting.None,
-        //                    NullValueHandling = NullValueHandling.Ignore
-        //                });
-
-        //                StringContent stringContent = new StringContent(adminProfileJson, Encoding.UTF8, "application/json");
-
-        //                using (var response = await httpClient.PostAsync(fullUrl, stringContent))
-        //                {
-        //                    if (response.IsSuccessStatusCode)
-        //                    {
-        //                        string responseContent = await response.Content.ReadAsStringAsync();
-        //                        var apiResponse = JsonConvert.DeserializeObject<ResponceContent>(responseContent);
-
-        //                        if (apiResponse.status == "Success")
-        //                        {
-        //                            return RedirectToAction("Index", "UserSetting");
-        //                        }
-        //                        else
-        //                        {
-        //                            return RedirectToAction("Login", "Account");
-        //                        }
-        //                    }
-        //                    return RedirectToAction("Index", "UserSetting");
-        //                }
-        //            }
-        //        }
-
-        //        return RedirectToAction("Login", "Account");
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        throw ex;
-        //    }
-        //}
         [HttpPost]
         public async Task<IActionResult> Create([FromForm] AdminProfileDetails adminProfileDetails, IFormFile profilePhoto)
         {
@@ -135,12 +42,8 @@ namespace ThinkEMR_Care.Core.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    // Convert the image to a base64 string
                     string imageBase64 = await ConvertImageToBase64Async(profilePhoto);
-
-                    // Include the base64 string in the adminProfileDetails object
                     adminProfileDetails.ProfileImage = imageBase64;
-
                     using (var httpClient = new HttpClient())
                     {
                         var apiUrl = "https://localhost:7286/api/AuthenticationService/Register";
@@ -182,7 +85,6 @@ namespace ThinkEMR_Care.Core.Controllers
             }
             catch (Exception ex)
             {
-                // Handle the exception appropriately, log it, etc.
                 return RedirectToAction("Login", "Account");
             }
         }
@@ -195,29 +97,7 @@ namespace ThinkEMR_Care.Core.Controllers
             }
         }
 
-        //public async Task<IActionResult> AdminProfile()
-        //{
-        //    List<AdminProfileDetails> adminProfileDataList = new List<AdminProfileDetails>();
-        //    string jwtToken = HttpContext.Session.GetString("JWToken");
-        //    if (string.IsNullOrEmpty(jwtToken))
-        //    {
-        //        return RedirectToAction("Login", "Account");
-        //    }
-        //    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
-        //    HttpResponseMessage response = client.GetAsync(baseUrl1).Result;
-        //    if (response.IsSuccessStatusCode)
-        //    {
-        //        string result = response.Content.ReadAsStringAsync().Result;
-        //        var data = JsonConvert.DeserializeObject<List<AdminProfileDetails>>(result);
-        //        if (data != null)
-        //        {
-        //            adminProfileDataList = data;
-        //        }
-        //    }
-        //    return View(adminProfileDataList);
-        //}
-
-
+        [HttpGet]
         public async Task<IActionResult> AdminProfile()
         {
             AdminProfileDetails adminProfileData = null;
@@ -231,7 +111,6 @@ namespace ThinkEMR_Care.Core.Controllers
                 return RedirectToAction("Login", "Account");
             }
 
-            // Construct the URL with the specific format
             string apiUrl = $"https://localhost:7286/api/AuthenticationService/GetLoggedInUserProfile?userName={Uri.EscapeDataString(username)}";
 
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
@@ -247,14 +126,42 @@ namespace ThinkEMR_Care.Core.Controllers
             return View(adminProfileData);
         }
 
-
         [HttpPost]
         public async Task<IActionResult> ChangeUserPassword([FromBody] ChangeUserPassword changeUserPassword)
         {
-            
-            return View();
-        }
+            if (changeUserPassword.CurrentPassword == changeUserPassword.NewPassword || changeUserPassword.NewPassword != changeUserPassword.ConformNewPassword)
+            {
+                return Json(new { success = false, message = "Current and New Password cannot be null or empty." });
+            }
+                string userName = HttpContext.Session.GetString("UserName");
+                string jwtToken = HttpContext.Session.GetString("JWToken");
 
+                if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(jwtToken) || changeUserPassword == null)
+                {
+                    return Json(new { success = false, message = "User information is invalid." });
+                }
+                using (var httpClient = new HttpClient())
+                {
+                    string apiUrl = $"https://localhost:7286/api/AuthenticationService/ChangeUserPassword?userName={Uri.EscapeDataString(userName)}&token={Uri.EscapeDataString(jwtToken)}";
+
+                    httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", jwtToken);
+
+                    StringContent stringContent = new StringContent(JsonConvert.SerializeObject(changeUserPassword), Encoding.UTF8, "application/json");
+
+                    using (var response = await httpClient.PostAsync(apiUrl, stringContent))
+                    {
+                        string responseContent = await response.Content.ReadAsStringAsync();
+                        var apiResponse = JsonConvert.DeserializeObject<ResponceContent>(responseContent);
+
+                        if (response.IsSuccessStatusCode && apiResponse != null && apiResponse.status == "Success")
+                        {
+                            return Json(new { success = apiResponse.status });
+                        }
+                        return Json(new { success = false, message = apiResponse.Message });
+
+                    }
+                }
+        }
 
     }
 }
