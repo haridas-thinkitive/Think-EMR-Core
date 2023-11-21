@@ -1,0 +1,147 @@
+﻿@model ThinkEMR_Care.Core.Models.ProviderUser
+@{
+    ViewData["Title"] = "ProviderUser";
+}
+
+<form asp-action="AddProvider" asp-controller="Users" method="post">
+    @Html.AntiForgeryToken()
+    <div>
+        <div style="float: left;">
+            <h4>Add Provider User</h4>
+        </div>
+
+        <div style="float: right;">
+            <button class="btn btn-primary">Cancel</button>
+            <button class="btn btn-primary" type="submit">Save</button>
+        </div>
+        <div style="clear: both;"></div> <!-- Clear the float to prevent overlapping content -->
+    </div>
+    <fieldset>
+        <legend>Information</legend>
+        <div style="display: flex; flex-wrap: wrap;">
+            <div style="width: 10%; padding: 10px;">
+                <label asp-for="Image"></label>
+                <input asp-for="Image" type="file" class="form-control-file" />
+            </div>
+            <div style="width: 30%; padding: 10px;">
+                
+                <label asp-for="ProviderType"></label>
+                <input asp-for="ProviderType" class="form-control" />
+
+                <div style="padding: 10px; display: flex;">
+                    <div style="width: 50%; padding-right: 5px;">
+                        <label asp-for="FirstName"></label>
+                        <input asp-for="FirstName" class="form-control" />
+                    </div>
+                    <div style="width: 50%; padding-left: 5px;">
+                        <label asp-for="LastName"></label>
+                        <input asp-for="LastName" class="form-control" />
+                    </div>
+                </div>
+
+                <label asp-for="ProviderPhoneNumber"></label>
+                <input asp-for="ProviderPhoneNumber" class="form-control" />
+
+                <label asp-for="LicensedStates"></label>
+                <input asp-for="LicensedStates" class="form-control" />
+
+                <label asp-for="YearOfExperience"></label>
+                <input asp-for="YearOfExperience" class="form-control" />
+
+                
+
+            </div>
+
+            <div style="width: 30%; padding: 10px;">
+                <label asp-for="EmailId"></label>
+                <input asp-for="EmailId" class="form-control" />
+
+                <label asp-for="Gender"></label>
+                <input asp-for="Gender" class="form-control" />
+
+                <label asp-for="OfficeFaxNumber"></label>
+                <input asp-for="OfficeFaxNumber" class="form-control" />
+
+                <label asp-for="LicenseNumber"></label>
+                <input asp-for="LicenseNumber" class="form-control" />
+
+                <label asp-for="TaxonomyNumber"></label>
+                <input asp-for="TaxonomyNumber" class="form-control" />
+            </div>
+
+            <div style="width: 30%; padding: 10px;">
+                @*<label asp-for="Role">Role</label>
+                <select id="Role" asp-for="Role" class="form-control">
+                    <option value="Facility Admin">Facility Admin</option>
+                    <option value="Specialist">Specialist</option>
+                    <option value="Primary Care Provider">Primary Care Provider</option>
+                    <option value="Physician Assistant">Physician Assistant</option>
+                    <option value="Physician">Physician</option>
+                </select>*@
+
+                <label asp-for="NPINumber"></label>
+                <input asp-for="NPINumber" class="form-control" />
+
+                <label asp-for="GroupNPINumber"></label>
+                <input asp-for="GroupNPINumber" class="form-control" />
+
+                <label asp-for="InsurancesAccepted"></label>
+                <input asp-for="InsurancesAccepted" class="form-control" />
+
+                <label asp-for="WorkLocations"></label>
+                <input asp-for="WorkLocations" class="form-control" />
+
+            </div>
+            <!-- Repeat this pattern for other properties -->
+            <!-- Adjust widths, labels, and inputs according to your UI design -->
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>Basic Account Profile Data</legend>
+        <div style="display: flex; flex-wrap: wrap;">
+            <div style="width: 25%; padding: 10px;">
+                <label asp-for="BasicAccountProfile.AreaOfFocus"></label>
+                <input asp-for="BasicAccountProfile.AreaOfFocus" class="form-control" />
+
+                <label asp-for="BasicAccountProfile.ProviderEmploymentReferralNumber"></label>
+                <input asp-for="BasicAccountProfile.ProviderEmploymentReferralNumber" class="form-control" />
+            </div>
+
+            <div style="width: 25%; padding: 10px;">
+                <label asp-for="BasicAccountProfile.HospitalAffilation"></label>
+                <input asp-for="BasicAccountProfile.HospitalAffilation" class="form-control" />
+
+                <label asp-for="BasicAccountProfile.AcceptNewPatients"></label>
+                <input asp-for="BasicAccountProfile.AcceptNewPatients" class="form-control" />
+            </div>
+
+            <div style="width: 25%; padding: 10px;">
+                <label asp-for="BasicAccountProfile.AgeGroupSeen"></label>
+                <input asp-for="BasicAccountProfile.AgeGroupSeen" class="form-control" />
+
+                <label asp-for="BasicAccountProfile.AcceptCashPay"></label>
+                <input asp-for="BasicAccountProfile.AcceptCashPay" class="form-control" />
+            </div>
+
+            <div style="width: 25%; padding: 10px;">
+                <label asp-for="BasicAccountProfile.LanguagesSpoken"></label>
+                <input asp-for="BasicAccountProfile.LanguagesSpoken" class="form-control" />
+
+                <label asp-for="BasicAccountProfile.InsuranceVerification"></label>
+                <input asp-for="BasicAccountProfile.InsuranceVerification" class="form-control" />
+            </div>
+        </div>
+        <div style="display: flex; flex-wrap: wrap;">
+            <div style="width: 100%; padding: 10px;">
+                <label asp-for="BasicAccountProfile.ProviderBio"></label>
+                <input asp-for="BasicAccountProfile.ProviderBio" class="form-control" />
+
+                <label asp-for="BasicAccountProfile.ExpertiseIn"></label>
+                <input asp-for="BasicAccountProfile.ExpertiseIn" class="form-control" />
+
+                <label asp-for="BasicAccountProfile.WorkExperience"></label>
+                <input asp-for="BasicAccountProfile.WorkExperience" class="form-control" />
+            </div>
+        </div>
+    </fieldset>
+</form>

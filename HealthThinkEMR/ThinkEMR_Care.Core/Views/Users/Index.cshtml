@@ -5,7 +5,7 @@
 
 <style>
     .dropdown {
-        position: relative;
+        position: initial;
         display: inline-block;
     }
 
@@ -17,7 +17,7 @@
         display: none;
         position: absolute;
         background-color: #f1f1f1;
-        min-width: 160px;
+        min-width: 100px;
         box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
         z-index: 1;
     }
@@ -41,10 +41,6 @@
 <div id="partialZone"></div>
 
 <br/>
-@*<div>
-    <h4 style="float: left;"><b>User</b></h4>
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="float: right;">Add User</button>
-</div>*@
 <div>
     <h4 style="float: left;"><b>User</b></h4>
   
@@ -52,7 +48,7 @@
         <button class="btn btn-primary dropbtn">Add User</button>
         <div id="myDropdown" class="dropdown-content">
             <a data-bs-toggle="modal" data-bs-target="#staticBackdrop" >Staff User</a>
-            <a href="#">Provider User</a>
+            <a href="@Url.Action("AddProvider", "Users")">Provider User</a>
         </div>
     </div>
 </div>
