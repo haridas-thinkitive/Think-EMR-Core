@@ -21,7 +21,7 @@ namespace ThinkEMR_Care.Core.Models
             public string LastName { get; set; }
 
             [Required(ErrorMessage = "Contact Number is Required")]
-            public string PhoneNumber { get; set; }
+            public string ContactNumber { get; set; }
             public DateTime? LastLogin { get; set; }
             public bool Status { get; set; }
             public bool IsDeleted { get; set; }
