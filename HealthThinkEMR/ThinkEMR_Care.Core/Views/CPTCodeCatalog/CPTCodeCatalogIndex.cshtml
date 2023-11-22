@@ -1,0 +1,60 @@
+﻿@model IEnumerable<ThinkEMR_Care.Core.Models.MasterDashboard.CPTCodeCatalog>
+
+@{
+    ViewData["Title"] = "CPTCodeCatalogIndex";
+}
+<div id="masterPartial"></div>
+@section Scripts{
+    <script>
+        $('#masterPartial').load("/DataImport/MasterPartial")
+    </script>
+
+    <script>
+        $('#addcptcode').load("/CPTCodeCatalog/Create")
+    </script>
+}
+<div class="col-6">
+    <input type="text" placeholder="Search here..." id="txtSearch" class="form-control m-1" style="width:50%;" />
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <table id="cptCodeTable" class="table table-bordered">
+                <thead>
+                    <tr class="text-center">
+                        @*<th>Id</th>*@
+                        <th>CptCodeCatalog</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="cptCodeTableBody">
+@foreach (var data in Model)
+{
+                        <tr class="text-center" data-asset-cptcode="@data.CptCodeCatalog" data-asset-description="@data.Description" data-asset-status="@data.Status">
+                          @*  <td>@data.Id</td>*@
+                            <td>@data.CptCodeCatalog</td>
+                            <td>@data.Description</td>
+                            <td>@data.Status</td>
+                        </tr>
+}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div id="addcptcode"></div>
+
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">Add CPT Code</button>
+<script>
+    $('#txtSearch').keyup(function () {
+        var searchValue = $(this).val();
+        $('tbody tr').each(function () {
+            if ($(this).text().search(new RegExp(searchValue, "i")) < 0) {
+                $(this).fadeOut();
+            } else {
+                $(this).fadeIn();
+            }
+        });
+    });
+</script>

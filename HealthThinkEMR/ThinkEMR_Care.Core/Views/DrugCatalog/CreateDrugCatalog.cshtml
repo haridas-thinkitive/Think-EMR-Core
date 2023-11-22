@@ -1,0 +1,103 @@
+﻿@model ThinkEMR_Care.Core.Models.MasterDashboard.DrugCatalog
+
+@using (Html.BeginForm("CreateDrugCatalog", "DrugCatalog", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Drug Catalog</h5>
+                </div>
+
+                <div class="modal-body">
+                    <div class="form-group">
+
+                        <label asp-for="Speciality" class="control-label">Speciality</label>
+                        <br>
+                        <select id="Speciality" name="Speciality" style="width: 450px; height: 40px;">
+                            <option value="" disabled selected style="color: #999;">Select Speciality...</option>
+                            <option value="AddictionMedicine">Addiction Medicine</option>
+                            <option value="Physician">Physician</option>
+                            <option value="Pyschiatrists">Pyschiatrists</option>
+                            <option value="Dermatologist">Dermatologist</option>
+                            <option value="Oncologist">Oncologist</option>
+                            <option value="Allergist">Allergist</option>
+                        </select>
+
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Medicine" class="control-label">Medicine Name</label>
+                        <input asp-for="Medicine" class="form-control" style="width: 450px; height: 40px;" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Type" class="control-label">Medicine Type</label>
+                        <br>
+                        <select id="Type" name="Type" style="width: 450px; height: 40px;">
+                            <option value="" disabled selected style="color: #999;">Select Type...</option>
+                            <option value="Liquid">Liquid</option>
+                            <option value="Capsule">Capsule</option>
+                            <option value="Tablet">Tablet</option>
+                        </select>
+                    </div>    
+                    <div class="form-group">
+                        <label asp-for="Dose" class="control-label">Recommendable Dose</label>
+                        <br>
+                        <select id="Dose" name="Dose" style="width: 450px; height: 40px;">
+                            <option value="" disabled selected style="color: #999;">Select Dose...</option>
+                            <option value="1-2-1">1-2-1</option>
+                            <option value="1-1-0">1-1-0</option>
+                            <option value="0-1-0">0-1-0</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="When" class="control-label">When</label>
+                        <br>
+                        <select id="When" name="When" style="width: 450px; height: 40px;">
+                            <option value="" disabled selected style="color: #999;">Select When...</option>
+                            <option value="AfterFood"> After Food</option>
+                            <option value="BeforeFood">Before food</option>
+                            <option value="AfterLunch">After Lunch</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Where" class="control-label">Where</label>
+                        <br>
+                        <select id="Where" name="Where" style="width: 450px; height: 40px;">
+                            <option value="" disabled selected style="color: #999;">Select Where...</option>
+                            <option value="OnScalp"> On Scalp</option>
+                            <option value="OnHand">On Hand</option>
+                            <option value="OnHip">On Hip</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Frequency" class="control-label">Recommendable Frequency</label>
+                        <input asp-for="Frequency" class="form-control" style="width: 450px; height: 40px;" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Duration" class="control-label">Recommendable Duration</label>
+                        <input asp-for="Duration" class="form-control" style="width: 450px; height: 40px;" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Qty" class="control-label">Qty</label>
+                        <input asp-for="Qty" class="form-control" style="width: 450px; height: 40px;" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Instructions" class="control-label">Instructions</label>
+                        <input asp-for="Instructions" class="form-control" style="width: 450px; height: 40px;" />
+                    </div>
+                   @* <div class="form-group">
+                        <label asp-for="Status" class="control-label">Status</label>
+                        <input asp-for="Status" class="form-control" />
+                    </div>*@
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}

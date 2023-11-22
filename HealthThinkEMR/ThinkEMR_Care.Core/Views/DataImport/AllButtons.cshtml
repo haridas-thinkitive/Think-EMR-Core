@@ -1,0 +1,18 @@
+﻿<div class="row">
+    <div class="col-12 mt-4">
+        <a class="btn btn-primary" asp-controller="DataImport" asp-action="DataImportIndex" id="dataImportButton">Data Import</a>
+        <a class="btn btn-primary" asp-controller="LOINCCodeCatalog" asp-action="LOINCCodeCatalogIndex" id="LOINCCodeCatalogButton">LOINC Code Catalog</a>
+        <a class="btn btn-primary" asp-controller="DrugCatalog" asp-action="DrugCatalogIndex" id="drugCatalogButton">Drug Catalog</a>
+        <a class="btn btn-primary" asp-controller="ICD10CodeCatalog" asp-action="ICD10CodeCatalogIndex" id="ICD10CodeCatalogButton">ICD 10 Code Catalog</a>
+        <a class="btn btn-primary" asp-controller="CPTCodeCatalog" asp-action="CPTCodeCatalogIndex" id="CPTCodeCatalogButton" onChange="changeCPTCODE()">CPT Code Catalog</a>
+        <a class="btn btn-primary" asp-controller="HCPCSCodeCatalog" asp-action="HCPCSCodeCatalogIndex" id="HCPCSCodeCatalogButton">HCPCS Code Catalog</a>
+        @*  @if (cptCode) {
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter"> Add CPT Code </button>
+        }*@
+
+    </div>
+ @* <form method="get" action="/ControllerName/ActionName">
+    <input type="text" name="searchTerm" placeholder="Search...">
+    <button type="submit">Search</button>
+</form>*@
+</div>

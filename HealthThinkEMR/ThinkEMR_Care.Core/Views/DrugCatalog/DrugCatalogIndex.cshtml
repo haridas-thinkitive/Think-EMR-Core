@@ -1,0 +1,134 @@
+﻿@model IEnumerable<ThinkEMR_Care.Core.Models.MasterDashboard.DrugCatalog>
+
+@{
+    ViewData["Title"] = "DrugCatalogIndex";
+}
+<div id="masterPartial" "></div>
+@section Scripts{
+    <script>
+        $('#masterPartial').load("/DataImport/MasterPartial")
+    </script>
+
+    <script>
+        $('#adddrugcatalog').load("/DrugCatalog/Create")
+    </script>
+    <script>
+        $('#FindById').load("/DrugCatalog/Find")
+    </script>
+}
+<div class="col-6">
+    <input type="text" placeholder="Search here..." id="txtSearch" class="form-control m-1" style="width:50%;" />
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-bordered">
+                <thead>
+                    <tr class="text-center">
+                        <th>Id</th>
+                        <th>Speciality</th>
+                        <th>Type</th>
+                        <th>Medicine</th>
+                        <th>Dose</th>
+                        <th>When</th>
+                        <th>Where</th>
+                        <th>Frequency</th>
+                        <th>Duration</th>
+                        <th>Qty</th>
+                        <th>Instructions</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="assetsTableBody">
+@foreach (var data in Model)
+{
+                        <tr class="text-center" data-asset-id="@data.Id" data-asset-speciality="@data.Speciality" data-asset-type="@data.Type" data-asset-medicine="@data.Medicine" data-asset-dose="@data.Dose" data-asset-when="@data.When" data-asset-where="@data.Where" data-asset-frequency="@data.Frequency" data-asset-duration="@data.Duration" data-asset-qty="@data.Qty" data-asset-instructions="@data.Instructions" data-asset-status="@data.Status">
+                            <td>@data.Id</td>
+                            <td>@data.Speciality</td>
+                            <td>@data.Type</td>
+                            <td>@data.Medicine</td>
+                            <td>@data.Dose</td>
+                            <td>@data.When</td>
+                            <td>@data.Where</td>
+                            <td>@data.Frequency</td>
+                            <td>@data.Duration</td>
+                            <td>@data.Qty</td>
+                            <td>@data.Instructions</td>
+                            <td>@data.Status</td>
+                            <td>
+                                <i class="fa fa-pencil edit-provider-group"
+                                   data-toggle="modal"
+                                   id="editButton" onclick="Edit('@data.Id')"></i>
+
+                            </td>
+                            
+                        </tr>
+}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div id="adddrugcatalog"></div>
+<div id="FindById"></div>
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">Add Drug Catalog</button>
+
+<script>
+    function Edit(id) {
+      
+        $.ajax({
+            url: 'FindById/' + id,
+            type: "Get",
+            contentType: 'application/json;charset=utf-8',
+            dataType: 'json', // Use 'dataType' instead of 'datatype'
+            success: function (data) {
+               
+
+                $('#edit-drug-catalog').modal('show');
+                $('#edit-drug-catalog').on('shown.bs.modal', function () {
+                 
+                    $('#Id-edit').val(data.id);
+                    $('#Speciality-edit').val(data.speciality);
+                    $('#Type-edit').val(data.type);
+                    $('#Medicine-edit').val(data.medicine);
+                    $('#Dose-edit').val(data.dose);
+                    $('#When-edit').val(data.when);
+                    $('#Where-edit').val(data.where);
+                    $('#Frequency-edit').val(data.frequency);
+                    $('#Duration-edit').val(data.duration);
+                    $('#Qty-edit').val(data.qty);
+                    $('#Instructions-edit').val(data.instructions);
+                    if(data.status){
+                        $("#Status-edit").attr('checked', 'checked')
+                    }
+                })
+               
+
+
+            },
+            error: function () {
+                alert('Failed to retrieve Drug Catalog data.');
+            }
+
+
+        });
+
+    }
+    function closeModal() {
+        $('#edit-drug-catalog').modal('hide');
+    }
+</script>
+
+<script>
+    $('#txtSearch').keyup(function () {
+        var searchValue = $(this).val();
+        $('tbody tr').each(function () {
+            if ($(this).text().search(new RegExp(searchValue, "i")) < 0) {
+                $(this).fadeOut();
+            } else {
+                $(this).fadeIn();
+            }
+        });
+    });
+</script>

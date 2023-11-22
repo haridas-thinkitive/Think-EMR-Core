@@ -1,0 +1,63 @@
+﻿@model IEnumerable<ThinkEMR_Care.Core.Models.MasterDashboard.LOINCCodeCatalog>
+
+@{
+    ViewData["Title"] = "LOINCCodeCatalogIndex";
+}
+<div id="masterPartial"></div>
+@section Scripts{
+    <script>
+        $('#masterPartial').load("/DataImport/MasterPartial")
+    </script>
+
+    <script>
+        $('#addloinc').load("/LOINCCodeCatalog/Create")
+    </script>
+}
+<div class="col-6">
+    <input type="text" placeholder="Search here..." id="txtSearch" class="form-control m-1" style="width:50%;" />
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+
+            <table id="loinc" class="table table-bordered">
+                <thead>
+                    <tr class="text-center">
+                       @* <th>Id</th>*@
+                        <th>LOINCCode</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="assetsTableBody2">
+@foreach (var data in Model)
+{
+                        <tr class="text-center"  data-asset-loinccode="@data.LOINCCode" data-asset-description="@data.Description" data-asset-status=" @data.Status">
+                           @* <td>@data.Id</td>*@
+                            <td>@data.LOINCCode</td>
+                            <td>@data.Description</td>
+                            <td>@data.Status</td>
+                        </tr>
+}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div id="addloinc"></div>
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">Add LOINC Code</button>
+
+<script>
+    $('#txtSearch').keyup(function () {
+        var searchValue = $(this).val();
+        $('tbody tr').each(function () {
+            if ($(this).text().search(new RegExp(searchValue, "i")) < 0) {
+                $(this).fadeOut();
+            } else {
+                $(this).fadeIn();
+            }
+        });
+    });
+</script>
+

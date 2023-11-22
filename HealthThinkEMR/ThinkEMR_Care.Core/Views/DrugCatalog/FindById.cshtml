@@ -1,0 +1,91 @@
+﻿@model ThinkEMR_Care.Core.Models.MasterDashboard.DrugCatalog
+
+@using (Html.BeginForm("FindById", "DrugCatalog", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="modal fade" id="edit-drug-catalog" tabindex="-1" role="dialog" aria-labelledby="editModalCenterLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Drug Catalog</h5>
+                </div>
+
+                <div class="modal-body">
+                    <form asp-action="FindById">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <label asp-for="Id" class="control-label"></label>
+                            <input asp-for="Id" id="Id-edit" class="form-control" />
+                            <span asp-validation-for="Id" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Speciality" class="control-label"></label>
+                            <input asp-for="Speciality" id="Speciality-edit" class="form-control" />
+                            <span asp-validation-for="Speciality" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Type" class="control-label"></label>
+                            <input asp-for="Type" id="Type-edit" class="form-control" />
+                            <span asp-validation-for="Type" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Medicine" class="control-label"></label>
+                            <input asp-for="Medicine" id="Medicine-edit" class="form-control" />
+                            <span asp-validation-for="Medicine" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Dose" class="control-label"></label>
+                            <input asp-for="Dose" id="Dose-edit" class="form-control" />
+                            <span asp-validation-for="Dose" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="When" class="control-label"></label>
+                            <input asp-for="When" id="When-edit" class="form-control" />
+                            <span asp-validation-for="When" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Where" class="control-label"></label>
+                            <input asp-for="Where" id="Where-edit" class="form-control" />
+                            <span asp-validation-for="Where" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Frequency" class="control-label"></label>
+                            <input asp-for="Frequency" id="Frequency-edit" class="form-control" />
+                            <span asp-validation-for="Frequency" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Duration" class="control-label"></label>
+                            <input asp-for="Duration" id="Duration-edit" class="form-control" />
+                            <span asp-validation-for="Duration" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Qty" class="control-label"></label>
+                            <input asp-for="Qty" id="Qty-edit" class="form-control" />
+                            <span asp-validation-for="Qty" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Instructions" class="control-label"></label>
+                            <input asp-for="Instructions" id="Instructions-edit" class="form-control" />
+                            <span asp-validation-for="Instructions" class="text-danger"></span>
+                        </div>
+                        <div class="form-group form-check">
+                            <label class="form-check-label">
+                                <input class="form-check-input" asp-for="Status" id="Status-edit" /> @Html.DisplayNameFor(model => model.Status)
+                            </label>
+                        </div>
+                       @* <div class="form-group">
+                            <input type="submit" value="Save" class="btn btn-primary" />
+                        </div>*@
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button id="closbtn" type="button" class="btn btn-secondary" onclick="closeModal()" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+

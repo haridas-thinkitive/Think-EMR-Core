@@ -1,0 +1,139 @@
+﻿@model IEnumerable<ThinkEMR_Care.Core.Models.MasterDashboard.DataImport>
+
+@{
+    ViewData["Title"] = "DataImportIndex";
+}
+
+<div id="masterPartial" "></div>
+@section Scripts{
+    <script>
+        $('#masterPartial').load("/DataImport/MasterPartial")
+    </script>
+}
+<div class="col-6">
+    <input type="text" placeholder="Search here..." id="txtSearch" class="form-control m-1" style="width:50%;" />
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <table id="hcpcs" class="table table-bordered">
+                <thead>
+                    <tr class="text-center">
+                        <th>Id</th>
+                        <th>Entity</th>
+                        <th>Last Updated Date</th>
+                        <th>TotalRecords</th>
+                        <th>SampleTemplate</th>
+                        <th>UploadFile</th>
+                    </tr>
+                </thead>
+                <tbody id="assetsTableBody1">
+@foreach (var data in Model)
+{
+                        <tr class="text-center" data-asset-id="@data.Id" data-asset-entity="@data.Entity" data-asset-lastupdateddate="@data.LastUpdatedDate" data-asset-totalrecords=" @data.TotalRecords" data-asset-sampletemplate="@data.SampleTemplate" data-asset-uploadfile="@data.UploadFile">
+                            <td>@data.Id</td>
+                            <td>@data.Entity</td>
+                            <td>@data.LastUpdatedDate</td>
+                            <td>@data.TotalRecords</td>
+
+                            <td>
+            @if (!string.IsNullOrEmpty(data.UploadFile))
+            {
+                                    <a href="javascript:void(0);" class="downloadLink" data-file-id="@data.Id" data-file-url="@Url.Content(data.UploadFile)">
+                                        <i class="bi bi-download" id="a"></i>
+                                    </a>
+            }
+                            </td>
+                            <td>
+                                <form class="uploadForm" method="post" asp-controller="DataImport" asp-action="UploadFile" enctype="multipart/form-data" style="display: none;">
+                                    <input type="file" class="fileInput" name="file" accept=".jpg, .jpeg, .png, .pdf">
+                                </form>
+                                <button class="uploadButton">Upload File</button>
+                            </td>
+                        </tr>
+}
+
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function () {
+                            var uploadButtons = document.querySelectorAll(".uploadButton");
+                            uploadButtons.forEach(function (button) {
+                                button.addEventListener("click", function () {
+                                    var form = button.closest("tr").querySelector(".uploadForm");
+                                    var fileInput = form.querySelector(".fileInput");
+                                    fileInput.click();
+                                });
+
+                                var fileInput = button.closest("tr").querySelector(".fileInput");
+
+                                fileInput.addEventListener("change", function () {
+                                    var form = fileInput.closest("tr").querySelector(".uploadForm");
+
+                                    if (fileInput.files.length > 0) {
+                                        var file = fileInput.files[0];
+                                        var formData = new FormData(form);
+                                        formData.append("file", file);
+
+                                        var fileId = form.closest("tr").getAttribute("data-asset-id");
+
+                                  
+                                        $.ajax({
+                                            url: '/DataImport/UploadFile?id=' + fileId,
+                                            type: "POST",
+                                            data: formData,
+                                            contentType: false,
+                                            processData: false,
+                                            success: function (response) {
+                                            },
+                                            error: function (error) {
+                                                console.error("File upload failed:", error);
+                                            }
+                                        });
+                                    }
+                                });
+                            });
+                            var downloadLinks = document.querySelectorAll(".downloadLink");
+                            downloadLinks.forEach(function (link) {
+                                link.addEventListener("click", function () {
+                                    var fileId = link.getAttribute("data-file-id");
+                                    var fileUrl = link.getAttribute("data-file-url");
+
+                                    $.ajax({
+                                        url: '/DataImport/DownloadFile?id=' + fileId,
+                                        type: "GET",
+                                       // data: formData,
+                                        contentType: false, xhrFields: {
+                                            responseType: 'blob' 
+                                        },
+                                        processData: false, 'Content-Type': 'application/octet-stream',
+                                        success: function (response) {
+                                            var link = document.createElement('a');
+                                            link.href = window.URL.createObjectURL(response);
+                                            link.download = 'downloaded_file.jpg'; 
+
+                                            document.body.appendChild(link);
+                                            link.click();                                       
+                                        },
+                                        error: function (error) {
+                                            console.error("File upload failed:", error);
+                                        }
+                                    });
+                                    
+                                });
+                            });
+                        });
+                    </script>
+
+                    <script>
+                        $('#txtSearch').keyup(function () {
+                            var searchValue = $(this).val();
+                            $('tbody tr').each(function () {
+                                if ($(this).text().search(new RegExp(searchValue, "i")) < 0) {
+                                    $(this).fadeOut();
+                                } else {
+                                    $(this).fadeIn();
+                                }
+                            });
+                        });
+                    </script>
+
+
