@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
     <style>
         .card-grid {
@@ -17,7 +18,6 @@
             left: 200px;
             width: 300px;
             height: 248px;
-            /* UI Properties */
             background: transparent url('img/Rectangle 8674.png') 0% 0% no-repeat padding-box;
             box-shadow: 0px 0px 8px #00000029;
             border-radius: 5px;
@@ -104,8 +104,8 @@
                                     <input type="text" class="form-control" placeholder="Email" id="email" autocomplete="off">
                                 </div>
                                 <div class="form-group">
-                                    <label for="" style="font-weight: bold;">Contact Number</label>
-                                    <input type="tel" class="form-control" placeholder="Phone Number" id="contactNumber" autocomplete="off">
+                                    <label for="phoneNumber" style="font-weight: bold;">Contact Number</label>
+                                    <input type="tel" class="form-control" placeholder="Phone Number" id="phoneNumber" autocomplete="off">
                                 </div>
                                 <div class="form-group">
                                     <label for="userName" style="font-weight: bold;">User Name</label>
@@ -182,7 +182,7 @@
             lastName: $('#lastName').val(),
             role: $('#role').val(),
             email: $('#email').val(),
-            contactNumber: $('#contactNumber').val(),
+            phoneNumber: $('#phoneNumber').val(),
             status: $('#status').val(),
             userName: $('#userName').val(),
             password: $('#password').val(),

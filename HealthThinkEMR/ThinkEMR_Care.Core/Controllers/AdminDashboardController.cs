@@ -62,6 +62,7 @@ namespace ThinkEMR_Care.Core.Controllers
                 HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
                 HttpContext.Session.Clear();
                 HttpContext.Session.Remove("JWToken");
+                HttpContext.Session.Remove("UserName");
                 return RedirectToAction("Login", "Account");
              }
             return View();
