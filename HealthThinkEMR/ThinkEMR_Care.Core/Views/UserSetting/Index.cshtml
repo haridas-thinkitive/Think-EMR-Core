@@ -104,8 +104,8 @@
                                     <input type="text" class="form-control" placeholder="Email" id="email" autocomplete="off">
                                 </div>
                                 <div class="form-group">
-                                    <label for="phoneNumber" style="font-weight: bold;">Contact Number</label>
-                                    <input type="tel" class="form-control" placeholder="Phone Number" id="phoneNumber" autocomplete="off">
+                                    <label for="contactNumber" style="font-weight: bold;">Contact Number</label>
+                                    <input type="tel" class="form-control" placeholder="Phone Number" id="contactNumber" autocomplete="off">
                                 </div>
                                 <div class="form-group">
                                     <label for="userName" style="font-weight: bold;">User Name</label>
@@ -175,14 +175,12 @@
     });
 
     function CreateAdminProfile() {
-        debugger;
-
         var adminProfileDetails = {
             firstName: $('#firstName').val(),
             lastName: $('#lastName').val(),
             role: $('#role').val(),
             email: $('#email').val(),
-            phoneNumber: $('#phoneNumber').val(),
+            contactNumber: $('#contactNumber').val(),
             status: $('#status').val(),
             userName: $('#userName').val(),
             password: $('#password').val(),
