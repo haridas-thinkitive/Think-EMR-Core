@@ -40,18 +40,18 @@
         <tbody>
             @foreach (var item in Model)
             {
-                <tr class="text-center" data-asset-id="@item.Id" data-asset-speciality="@item.DepartmentId" data-asset-type="@item.DepartmentName" data-asset-type="@item.DepartmentAdmin" data-asset-type="@item.ContactNumber" >
+                <tr>
                     <td>
-                        @item.DepartmentId
+                        @Html.DisplayFor(modelItem => item.DepartmentId)
                     </td>
                     <td>
-                        @item.DepartmentName
+                        @Html.DisplayFor(modelItem => item.DepartmentName)
                     </td>
                     <td>
-                        @item.DepartmentAdmin
+                        @Html.DisplayFor(modelItem => item.DepartmentAdmin)
                     </td>
                     <td>
-                        @item.ContactNumber
+                        @Html.DisplayFor(modelItem => item.ContactNumber)
                     </td>
                     @*<td>
                         @Html.DisplayFor(modelItem => item.Status)
