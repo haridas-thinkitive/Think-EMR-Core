@@ -11,6 +11,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js"></script>
 
 
 
@@ -23,6 +26,8 @@
 
         .navbar {
             z-index: 3; 
+            display: flex;
+            justify-content: space-between;
         }
 
         .sidenav {
@@ -59,11 +64,56 @@
         .swal2-confirm, .swal2-cancel {
             width: 50%;
         }
+
+        .navbar-brand, #userProfileContainer {
+            display: flex;
+            align-items: center;
+        }
+
+        #userNameElement {
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        #userProfileContainer {
+            display: flex;
+            align-items: center;
+            margin-left: auto;
+        }
+
+        #userProfileContainer {
+            margin-right: 10px; 
+            padding-left:1100px;
+        }
+
+        #userProfileImage {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 50%; 
+            margin-left: 10px; 
+            padding:5px;
+        }
+
+
     </style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light " style="background-color:aliceblue">
-        <a class="navbar-brand" href="/"><h2 style="color:dodgerblue; margin:14px"><b>thinkEMR</b></h2></a>  
+        <a class="navbar-brand" href="/">
+            <h2 style="color:dodgerblue; margin:14px"><b>thinkEMR</b></h2>
+        </a>
+        <div id="userProfileContainer" class="ml-auto col">
+            <div >
+                <i class="fas fa-bell" style="font-size: 20px; margin-right: 5px;"></i>
+            </div>
+            <div>
+                <img id="userProfileImage" class="rounded-circle" alt="User Profile Image">
+            </div>
+            <div>
+                <span id="userNameElement"></span>
+            </div>
+        </div>
     </nav>
 
     <div class="sidenav" style="background-color:aliceblue">
@@ -110,21 +160,48 @@
                 if (result.isConfirmed) {
                     window.location.href = '@Url.Action("Logout", "AdminDashboard")';
                 } else {
-                    // User canceled, stay on the dashboard
                 }
             });
         });
     </script>
 
+
+    @{
+        var userName = ViewContext.HttpContext.Session.GetString("UserName");
+        var jwtToken = ViewContext.HttpContext.Session.GetString("JWToken");
+    }
+
+    <script>
+        $(document).ready(function () {
+            var userName = '@userName';
+            var jwtToken = '@jwtToken';
+            $.ajax({
+                url: 'https://localhost:7286/api/AuthenticationService/GetLoggedInUserProfile?userName=' + userName,
+                method: 'GET',
+                dataType: 'json',
+                headers: {
+                    'Authorization': 'Bearer ' + jwtToken
+                },
+                xhrFields: {
+                    withCredentials: true
+                },
+                success: function (data) {
+                    $('#userProfileImage').attr('src', 'data:image/jpeg;base64,' + data.profileImage);
+                    $('#userNameElement').text(data.firstName + ' ' + data.lastName);
+                },
+                error: function (error) {
+                    console.error('Error fetching data:', error);
+                }
+            });
+        });
+    </script>
     <div class="main">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
