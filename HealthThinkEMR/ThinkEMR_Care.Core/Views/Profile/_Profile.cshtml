@@ -1,7 +1,5 @@
 ﻿@model ThinkEMR_Care.Core.Models.ProviderGroupProfile
-@{
-    ViewData["Title"] = "Details";
-}
+
 <style>
     img {
         border: 100px solid thick;
@@ -31,7 +29,6 @@
 <br />
 
 <form asp-action="ProfilePartial" asp-controller="Profile" method="get">
-    @Html.AntiForgeryToken()
     <div>
 
         <div class="row">
@@ -70,7 +67,7 @@
                     </tr>
                     <tr>
                         <th>Physical Address </th>
-                        <td>: @Html.DisplayFor(model => model.PhysicalAddressId)</td>
+                        <td>: @Html.DisplayFor(model => model.PhysicalAddress.Address1)</td>
                     </tr>
                 </table>
             </div>
