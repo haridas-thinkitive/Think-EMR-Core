@@ -35,11 +35,11 @@ namespace ThinkEMR_Care.Core.Controllers
                         if (response.IsSuccessStatusCode)
                         {
                             string responseContent = await response.Content.ReadAsStringAsync();
-                            var apiResponse = JsonConvert.DeserializeObject<APIResponce<string>>(responseContent);
+                            var apiResponse = JsonConvert.DeserializeObject<ApiResponse<string>>(responseContent);
 
                             if (apiResponse.IsSuccess)
                             {
-                                HttpContext.Session.SetString("JWToken", apiResponse.Responce);
+                                HttpContext.Session.SetString("JWToken", apiResponse.Response);
                                 HttpContext.Session.SetString("UserName", apiResponse.CurrentUserNmae);
                                 return RedirectToAction("Index", "AdminDashboard");
                             }

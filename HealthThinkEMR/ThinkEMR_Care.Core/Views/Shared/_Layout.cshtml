@@ -25,47 +25,42 @@
         }
 
         .navbar {
-            z-index: 3; 
+            z-index: 3;
             display: flex;
             justify-content: space-between;
         }
 
-        .sidenav {
-            height: 100%;
-            width: 200px;
-            position: fixed;
-            z-index: 1;
-            top: -10;
-            left: 0;
-            padding-top: 20px;
+        .sidebar a {
+            padding: 6px 8px 4px 16px;
+            text-decoration: none;
+            display: block;
+            color: dodgerblue;
+            padding: 10px;
         }
-
-            .sidenav a {
-                padding: 6px 8px 6px 16px;
-                text-decoration: none;
-                display: block;
-                color: dodgerblue;
-                padding: 10px;
-            }
 
         i {
             padding-right: 10px;
         }
 
-        .sidenav a:hover {
+        .sidebar a:hover {
             color: royalblue;
         }
 
         .main {
             margin-left: 200px;
             padding: 0px 10px;
+            
         }
 
-        .swal2-confirm, .swal2-cancel {
-            width: 50%;
+        .content{
+            
+            background: #FFFFFF;
+            box-shadow: -5px 0 10px 0 rgba(0, 0, 0, 0.5);
+            opacity: 2;
         }
 
-        .navbar-brand, #userProfileContainer {
+        .navbar-brand,
+        #userProfileContainer {
             display: flex;
             align-items: center;
         }
@@ -82,69 +77,85 @@
         }
 
         #userProfileContainer {
-            margin-right: 10px; 
-            padding-left:1100px;
+            margin-right: 10px;
+            padding-left: 1100px;
         }
 
         #userProfileImage {
             width: 50px;
             height: 50px;
             object-fit: cover;
-            border-radius: 50%; 
-            margin-left: 10px; 
-            padding:5px;
+            border-radius: 50%;
+            margin-left: 10px;
+            padding: 5px;
         }
 
 
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light " style="background-color:aliceblue">
-        <a class="navbar-brand" href="/">
-            <h2 style="color:dodgerblue; margin:14px"><b>thinkEMR</b></h2>
-        </a>
-        <div id="userProfileContainer" class="ml-auto col">
-            <div >
-                <i class="fas fa-bell" style="font-size: 20px; margin-right: 5px;"></i>
-            </div>
-            <div>
-                <img id="userProfileImage" class="rounded-circle" alt="User Profile Image">
-            </div>
-            <div>
-                <span id="userNameElement"></span>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top" style="position: fixed;">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">
+                <h2 style="color: dodgerblue;"><b>thinkEMR</b></h2>
+            </a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <div id="userProfileContainer" class="ml-auto col">
+                        <div>
+                            <i class="fas fa-bell" style="font-size: 20px; margin-right: 5px;"></i>
+                        </div>
+                        <div>
+                            <img id="userProfileImage" class="rounded-circle" >
+                        </div>
+                        <div>
+                            <span id="userNameElement"></span>
+                        </div>
+                    </div>
+                </ul>
             </div>
         </div>
     </nav>
 
-    <div class="sidenav" style="background-color:aliceblue">
-        <ul class="nav flex-column">
-            <li>
-                <a asp-area="" asp-controller="AdminDashboard" asp-action="Index"><i class="bi bi-house"></i> Dashboard</a>
-            </li>
-            <li>
-                <a asp-area="" asp-controller="ProviderGroups" asp-action="Index"><i class="bi bi-people-fill"></i> Provider Group</a>
-            </li>
-            <li>
-                <a asp-area="" asp-controller="" asp-action="Index"><i class="bi bi-collection"></i> Master</a>
-            </li>
-            <li>
-                <a asp-area="" asp-controller="UserSetting" asp-action="Index"><i class="bi bi-gear-fill"></i> Settings</a>
-                <ul>
-                    <li>
-                        <a asp-area="" asp-controller="UserSetting" asp-action="AdminProfile">Profile</a>
-                    </li>
-                    <li>
-                        <a asp-area="" asp-controller="UserSetting" asp-action="Index">User Settings </a>
-                    </li>
-                </ul>
-            </li>
-            <li>
-                <a asp-area="" asp-controller="AdminDashboard" asp-action="Logout" id="logoutButton"><i class="bi bi-box-arrow-right"></i> Logout</a>
-            </li>
-        </ul>
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="col-md-2 d-md-block bg-light sidebar" style="margin-top: 110px; background:#FFFFFF; height: auto;">
+                <div>
+                    <ul class="nav flex-column">
+                        <li>
+                            <a asp-area="" asp-controller="AdminDashboard" asp-action="Index"><i class="bi bi-house"></i> Dashboard</a>
+                        </li>
+                        <li>
+                            <a asp-area="" asp-controller="ProviderGroups" asp-action="Index"><i class="bi bi-people-fill"></i> Provider Group</a>
+                        </li>
+                        <li>
+                            <a asp-area="" asp-controller="" asp-action="Index"><i class="bi bi-collection"></i> Master</a>
+                        </li>
+                        <li>
+                            <a asp-area="" asp-controller="UserSetting" asp-action="Index"><i class="bi bi-gear-fill"></i> Settings</a>
+                            <ul>
+                                <li>
+                                    <a asp-area="" asp-controller="UserSetting" asp-action="AdminProfile">Profile</a>
+                                </li>
+                                <li>
+                                    <a asp-area="" asp-controller="UserSetting" asp-action="Index">User Settings </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a asp-area="" asp-controller="AdminDashboard" asp-action="Logout" id="logoutButton"><i class="bi bi-box-arrow-right"></i> Logout</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+            <main class="col-md-10 ms-sm-auto col-lg-10 px-md-4 content" style="margin-top: 110px;" ><br />
+                @RenderBody()
+            </main>
+        </div>
     </div>
+    
 
-
+@section Script{
     <script>
         document.getElementById('logoutButton').addEventListener('click', function (e) {
             e.preventDefault();
@@ -195,12 +206,8 @@
             });
         });
     </script>
-    <div class="main">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
 
+}
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

@@ -182,7 +182,6 @@ namespace ThinkEMR_Care.Core.Controllers
         /// </summary>
         /// <returns></returns>
 
-        
 
         public async Task<ActionResult> AddProvider(ProviderUser model)
         {
@@ -201,7 +200,6 @@ namespace ThinkEMR_Care.Core.Controllers
                     }
                     else if (response.StatusCode == HttpStatusCode.BadRequest)
                     {
-                        // Handle validation errors if necessary
                         var validationErrors = await response.Content.ReadAsStringAsync();
                         ModelState.AddModelError(string.Empty, $"API request failed with status code {response.StatusCode}. Validation errors: {validationErrors}");
                     }

@@ -175,4 +175,11 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    <script>
+        var errorMessage = '@(TempData["ErrorMessage"])';
+
+        if (errorMessage) {
+            alert(errorMessage);
+        }
+    </script>
     }

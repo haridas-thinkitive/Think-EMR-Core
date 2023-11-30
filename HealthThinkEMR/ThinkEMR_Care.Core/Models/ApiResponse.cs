@@ -1,6 +1,6 @@
 ﻿namespace ThinkEMR_Care.Core.Models
 {
-    public class APIResponce<T>
+    public class ApiResponse<T>
     {
         public bool IsSuccess { get; set; }
 
@@ -8,7 +8,7 @@
 
         public int StatusCode { get; set; }
 
-        public T? Responce { get; set; }
+        public T? Response { get; set; }
 
         public string? CurrentUserNmae { get; set; }
 

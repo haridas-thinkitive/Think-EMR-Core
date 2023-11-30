@@ -4,3 +4,10 @@
 // Write your JavaScript code.
 //var myModal = new bootstrap.Modal(document.getElementById('editStaticBackdrop'));
 
+<script>
+    var errorMessage = '@(TempData["ErrorMessage"])';
+
+    if (errorMessage) {
+        alert(errorMessage);
+    }
+</script>

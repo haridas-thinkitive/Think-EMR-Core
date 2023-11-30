@@ -11,7 +11,7 @@ namespace ThinkEMR_Care.Core.Controllers
     public class UserSettingController : Controller
     {
 
-        private string baseUrl = "https://localhost:7286/api/AuthenticationService/GetAllAdminProfiles";
+        private string baseUrl = "https://localhost:7286/api/AuthenticationService/ ";
         private HttpClient client = new HttpClient();
         public IActionResult Index()
         {
