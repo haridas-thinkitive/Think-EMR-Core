@@ -66,6 +66,11 @@ namespace ThinkEMR_Care.Core.Controllers
                     ModelState.AddModelError(string.Empty, "API request failed");
                 }
             }
+            else // If ModelState is invalid
+            {
+                TempData["ErrorMessage"] = "Invalid model state"; // Store error message in TempData
+                return RedirectToAction("Index");
+            }
             return View(model);
         }
 
@@ -100,6 +105,11 @@ namespace ThinkEMR_Care.Core.Controllers
                 {
                     ModelState.AddModelError(string.Empty, "API request failed: " + ex.Message);
                 }
+            }
+            else // If ModelState is invalid
+            {
+                TempData["ErrorMessage"] = "Invalid model state"; // Store error message in TempData
+                return RedirectToAction("Index");
             }
             return View(model);
         }
