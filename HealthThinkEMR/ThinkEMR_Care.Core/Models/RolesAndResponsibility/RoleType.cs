@@ -8,12 +8,11 @@ using System.Threading.Tasks;
 
 namespace ThinkEMR_Care.DataAccess.Models.Roles_and_Responsibility
 {
-    [Table("tblRoleType")]
-    public class RoleType
+    public class RoleTypes
     {
         [Key]
         public int RoleTypeId { get; set; }
         public string RoleTypeName { get; set; }
-        public List<Permission> Permissions { get; set; }
+
     }
 }

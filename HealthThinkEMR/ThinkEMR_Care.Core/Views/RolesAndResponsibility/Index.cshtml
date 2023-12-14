@@ -1,0 +1,66 @@
+﻿@using ThinkEMR_Care.DataAccess.Models.Roles_and_Responsibility;
+@model IEnumerable<ThinkEMR_Care.DataAccess.Models.Roles_and_Responsibility.RolePermission>
+
+@section Scripts
+{
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/css/bootstrap-multiselect.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/js/bootstrap-multiselect.min.js"></script>
+
+    <script>
+        $('#addnewrole').load("/RolesAndResponsibility/CreatePartial");
+    </script>
+}
+
+<div class="row">
+    <div class="col">
+        <button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("Index", "UserSetting")'">
+            Users
+        </button>
+        <button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("Index", "RolesAndResponsibility")'">
+            Roles & Responsibility
+        </button>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="float: right;">Add New Role</button>
+    </div>
+</div>
+
+@{
+    var groupedRolePermissions = Model.GroupBy(rp => rp.RoleTypeId).ToList();
+}
+
+@foreach (var group in groupedRolePermissions)
+{
+    var roleType = group.FirstOrDefault()?.RoleType;
+    if (roleType != null)
+    {
+        <br />
+        <br />
+        <h5>@roleType.RoleTypeName</h5>
+        <table class="table table-hover">
+            <thead class="table-active">
+                <tr>
+                    <th>Permissions</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in group)
+                {
+                    <tr>
+                        <td>@item.Permission.PermissionName</td>
+                        <td>@item.Permission.Description</td>
+                        <td>@(item.Permission.Status ? "Active" : "Inactive")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <br />
+    }
+}
+
+<div id="addnewrole">
+</div>
+
+

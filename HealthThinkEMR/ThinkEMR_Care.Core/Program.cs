@@ -2,7 +2,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddSession(Options =>
 {
-    Options.IdleTimeout = TimeSpan.FromMinutes(2);
+    Options.IdleTimeout = TimeSpan.FromMinutes(20);
 
 });
 
