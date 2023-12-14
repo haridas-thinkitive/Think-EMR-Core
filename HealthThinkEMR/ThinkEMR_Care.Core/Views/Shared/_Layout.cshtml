@@ -2,7 +2,6 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    @*<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.0/css/bootstrap.min.css">*@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/ThinkEMR_Care.Core.styles.css" asp-append-version="true" />
@@ -12,10 +11,12 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.17.0/font/bootstrap-icons.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
     <script src="~/js/site.js"></script>
-
-
 
     <style>
         body {
@@ -95,7 +96,74 @@
             padding:5px;
         }
 
+        .notification-icon {
+            position: relative;
+            cursor: pointer;
+        }
 
+        .badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: red;
+            color: white;
+            border-radius: 50%;
+            padding: 3px 6px;
+            font-size: 12px;
+        }
+
+        .box {
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .box-body {
+            padding: 15px;
+        }
+
+        .osahan-post-header {
+            display: flex;
+            align-items: center;
+        }
+
+        .notification-content {
+            flex: 1;
+        }
+
+            .notification-content .text-truncate {
+                max-width: 100%;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .text-muted {
+            color: #6c757d !important;
+        }
+
+        .notification-content .small {
+            color: #6c757d;
+        }
+
+        .mark-as-read-icon {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #28a745;
+        }
+
+        .delete-notification-icon {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #dc3545;
+            margin-left: 10px;
+        }
     </style>
 </head>
 <body>
@@ -104,8 +172,9 @@
             <h2 style="color:dodgerblue; margin:14px"><b>thinkEMR</b></h2>
         </a>
         <div id="userProfileContainer" class="ml-auto col">
-            <div >
+            <div class="notification-icon">
                 <i class="fas fa-bell" style="font-size: 20px; margin-right: 5px;"></i>
+                <span class="badge" id="notification-count">0</span>
             </div>
             <div>
                 <img id="userProfileImage" class="rounded-circle" alt="User Profile Image">
@@ -115,6 +184,21 @@
             </div>
         </div>
     </nav>
+
+    <div class="modal fade" id="notificationModal" tabindex="-1" role="dialog" aria-labelledby="notificationModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-slideout modal-dialog-slideout-right" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="notificationModalLabel">Notifications</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Add your notification content here -->
+                    <p>This is a sample notification content.</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="sidenav" style="background-color:aliceblue">
         <ul class="nav flex-column">
@@ -144,7 +228,6 @@
         </ul>
     </div>
 
-
     <script>
         document.getElementById('logoutButton').addEventListener('click', function (e) {
             e.preventDefault();
@@ -166,10 +249,115 @@
     </script>
 
 
+
+
     @{
         var userName = ViewContext.HttpContext.Session.GetString("UserName");
         var jwtToken = ViewContext.HttpContext.Session.GetString("JWToken");
     }
+    <script>
+        var jwtToken = '@jwtToken';
+
+        function deleteNotification(notificationId) {
+            debugger;
+            $.ajax({
+                url: 'https://localhost:7286/api/Notification/MarkAsRead/' + notificationId,
+                type: 'PUT',
+                headers: {
+                    'Authorization': 'Bearer ' + jwtToken
+                },
+                success: function (response) {
+                    console.log('Notification marked as read successfully');
+                },
+                error: function (error) {
+                    console.error('Error marking notification as read', error);
+                }
+            });
+        }
+
+        $(document).ready(function () {
+            const notificationIcon = document.querySelector('.notification-icon');
+            const notificationBadge = document.getElementById('notification-count');
+            const notificationModalBody = $('#notificationModal .modal-body');
+
+            // Load All Notification on Modal Popup
+            fetchNotifications();
+
+            notificationIcon.addEventListener('click', function () {
+                // Fetch notification
+                fetchNotifications();
+
+                $('#notificationModal').modal('show');
+            });
+
+            function fetchNotifications() {
+                $.ajax({
+                    url: 'https://localhost:7286/api/Notification/GetNotificationByID?username=' + '@userName',
+                    method: 'GET',
+                    dataType: 'json',
+                    headers: {
+                        'Authorization': 'Bearer ' + jwtToken
+                    },
+                    xhrFields: {
+                        withCredentials: true
+                    },
+                    success: function (data) {
+                        console.log('Notifications:', data);
+                        if (Array.isArray(data)) {
+                            updateNotificationCount(data.filter(notification => !notification.isRead).length);
+                            displayNotifications(data);
+                        }
+                    },
+                    error: function (error) {
+                        console.error('Error fetching notifications:', error);
+                    }
+                });
+            }
+
+            function updateNotificationCount(count) {
+                notificationBadge.textContent = count;
+
+                if (count > 0) {
+                    notificationBadge.style.display = 'block';
+                } else {
+                    notificationBadge.style.display = 'none';
+                }
+            }
+
+            function displayNotifications(notifications) {
+                // Clear existing content in the modal body
+                notificationModalBody.empty();
+
+                const unreadNotifications = notifications.filter(notification => !notification.isRead);
+
+                unreadNotifications.forEach(notification => {
+                    const notificationItem = $(`
+                        <div class="box shadow-sm rounded bg-white mb-3 d-flex">
+                            <div class="box-body p-0 w-100">
+                                <div class="p-3 d-flex align-items-center osahan-post-header">
+                                    <div class="font-weight-bold flex-grow-1">
+                                        <div class="text-truncate">${notification.message}</div>
+                                        <div class="small">${notification.timestamp}</div>
+                                    </div>
+                                    <div class="ml-auto">
+                                        <!-- Mark as Read icon -->
+                                        <i class="bi bi-check-circle mark-as-read-icon" onclick="deleteNotification(${notification.id})" title="Mark as Read"></i>
+
+                                        <!-- Delete Notification icon -->
+                                        <i class="bi bi-trash delete-notification-icon" onclick="deleteNotification(${notification.id})" title="Delete Notification"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `);
+                    notificationModalBody.append(notificationItem);
+                });
+            }
+        });
+    </script>
+
+
+
 
     <script>
         $(document).ready(function () {
@@ -195,6 +383,7 @@
             });
         });
     </script>
+
     <div class="main">
         <main role="main" class="pb-3">
             @RenderBody()
