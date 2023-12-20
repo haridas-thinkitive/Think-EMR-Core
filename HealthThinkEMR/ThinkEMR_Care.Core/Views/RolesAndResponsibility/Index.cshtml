@@ -25,40 +25,6 @@
     </div>
 </div>
 
-@{
-    var groupedRolePermissions = Model.GroupBy(rp => rp.RoleTypeId).ToList();
-}
-
-@foreach (var group in groupedRolePermissions)
-{
-    var roleType = group.FirstOrDefault()?.RoleType;
-    if (roleType != null)
-    {
-        <br />
-        <br />
-        <h5>@roleType.RoleTypeName</h5>
-        <table class="table table-hover">
-            <thead class="table-active">
-                <tr>
-                    <th>Permissions</th>
-                    <th>Description</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in group)
-                {
-                    <tr>
-                        <td>@item.Permission.PermissionName</td>
-                        <td>@item.Permission.Description</td>
-                        <td>@(item.Permission.Status ? "Active" : "Inactive")</td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-        <br />
-    }
-}
 
 <div id="addnewrole">
 </div>
